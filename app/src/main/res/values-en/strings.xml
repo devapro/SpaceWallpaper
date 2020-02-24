@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Space Wallpaper</string>
+    <string name="wallpaper_description">Space Wallpaper</string>
+    <string name="info">For the application to work correctly, you must allow access to files. Access is required to save new background images.</string>
+    <string name="info_for_settings">To set the wallpaper, click the button below.</string>
+    <string name="open_settings">Install</string>
+    <string name="open_info">About app</string>
+    <string name="settings_animation">Phone tilt animation:</string>
+    <string name="about_app_title">Information</string>
+    <string name="about_app">Backgrounds for wallpapers are loaded through the open API https://api.nasa.gov.\n\rContact us: arseniidev@gmail.com</string>
+    <string name="settings">Settings</string>
+</resources>

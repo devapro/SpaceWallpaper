@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Космос обои</string>
+    <string name="settings">Настройки</string>
+    <string name="wallpaper_description">Космос обои</string>
+    <string name="info">Для корректной работы приложения нужно разрешить доступ к файлам. Доступ необходим для сохранения новых фоновых картинок.</string>
+    <string name="info_for_settings">Для установки обоев, нажмите кнопку ниже.</string>
+    <string name="open_settings">Установить</string>
+    <string name="open_info">Информация о приложении</string>
+    <string name="settings_animation">Анимация при наклоне телефона:</string>
+    <string name="about_app_title">Информация</string>
+    <string name="about_app">Фоны для обоев загружаются через открытое API https://api.nasa.gov.\n\rОбратная связь arseniidev@gmail.com</string>
+</resources>
