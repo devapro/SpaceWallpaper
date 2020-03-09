@@ -13,4 +13,6 @@ class ImageDiffUtil: DiffUtil.ItemCallback<EntityImage>() {
         return oldItem == newItem
     }
 
+    //TODO
+    // add payload. need update only if local path is updated
 }

@@ -1,10 +1,10 @@
-package com.devapp.nasawallpaper.ui
+package com.devapp.nasawallpaper.ui.fragments
 
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.devapp.nasawallpaper.MainActivity
+import com.devapp.nasawallpaper.ui.MainActivity
 import kotlinx.android.synthetic.main.view_toolbar.*
 
 // https://medium.com/@programmerr47/give-toolbar-to-each-fragment-52c3a996deb5

@@ -1,14 +1,15 @@
 package com.devapp.nasawallpaper.ui.customview
 
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
-import com.devapp.nasawallpaper.UtilFiles
+import com.devapp.nasawallpaper.utils.UtilFiles
 import com.devapp.nasawallpaper.logic.entity.EntityImage
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class ImagesListAdapter : PagedListAdapter<EntityImage, ImageViewHolder>(POST_COMPARATOR) {
-
-    var actionListener: ActionListener? = null
+class ImagesListAdapter(private val actionListener: ActionListener) : PagedListAdapter<EntityImage, ImageViewHolder>(POST_COMPARATOR) {
 
     companion object {
         val POST_COMPARATOR = ImageDiffUtil()
@@ -25,28 +26,23 @@ class ImagesListAdapter : PagedListAdapter<EntityImage, ImageViewHolder>(POST_CO
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         val image = getItem(position)
-        image?.localPath?.run {
-            UtilFiles().getFromPathWithCompress(
-                holder.image,
-                this,
-                1000,
-                1000
-            )
-            holder.progress.hide()
-        }
-        image?.run {
-            if(localPath == null){
-                holder.progress.show()
-                actionListener?.downloadImage(image)
+        holder.onBind(image, object : ImageViewHolder.ActionListener{
+            override suspend fun getImage(item: EntityImage): Drawable? {
+                return actionListener.getImage(item)
             }
-        }
+        })
     }
 
     override fun getItemId(position: Int): Long {
         return getItem(position)?.id?.toLong() ?: 0L
     }
 
+    override fun onViewRecycled(holder: ImageViewHolder) {
+        super.onViewRecycled(holder)
+        holder.onUnBind()
+    }
+
     interface ActionListener{
-        fun downloadImage(item: EntityImage)
+        suspend fun getImage(item: EntityImage): Drawable?
     }
 }

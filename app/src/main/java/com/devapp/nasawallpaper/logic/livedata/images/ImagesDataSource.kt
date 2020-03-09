@@ -33,10 +33,10 @@ class ImagesDataSource (private val dataRepository: DataRepository) : ItemKeyedD
             callback.onResult(mapper.map(result))
         } else {
             val resultInitial = dataRepository.getImagesInitial(sinceDate, params.requestedLoadSize)
-            val resultAfter = dataRepository.getImagesAfterDate(sinceDate, params.requestedLoadSize)
+            val resultBefore = dataRepository.getImagesBeforeDate(sinceDate, params.requestedLoadSize)
             val result = ArrayList<DbEntityImage>()
+            result.addAll(resultBefore.reversed())
             result.addAll(resultInitial)
-            result.addAll(resultAfter)
             callback.onResult(mapper.map(result))
         }
     }
@@ -50,11 +50,11 @@ class ImagesDataSource (private val dataRepository: DataRepository) : ItemKeyedD
     override fun loadBefore(params: LoadParams<Long>, callback: LoadCallback<EntityImage>) {
         val sinceDate = params.key ?: 0
         val result = dataRepository.getImagesBeforeDate(sinceDate, params.requestedLoadSize)
-        callback.onResult(mapper.map(result))
+        callback.onResult(mapper.map(result.reversed()))
     }
 
     override fun getKey(item: EntityImage): Long {
-        return item.createdAt
+        return item.id.toLong()
     }
 
 }

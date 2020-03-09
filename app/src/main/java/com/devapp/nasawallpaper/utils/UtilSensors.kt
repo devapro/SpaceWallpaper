@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper
+package com.devapp.nasawallpaper.utils
 
 import android.content.Context
 import android.hardware.Sensor
@@ -77,7 +77,8 @@ class UtilSensors private constructor(context: Context){
         lateinit var instase : UtilSensors
 
         fun init(context: Context){
-            instase = UtilSensors(context)
+            instase =
+                UtilSensors(context)
         }
 
         fun start(listener: SensorChangeListener){
@@ -88,7 +89,7 @@ class UtilSensors private constructor(context: Context){
             instase.stop()
         }
 
-        fun get() : UtilSensors{
+        fun get() : UtilSensors {
             return instase
         }
     }

@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper
+package com.devapp.nasawallpaper.utils
 
 import android.graphics.BitmapFactory
 import android.widget.ImageView
@@ -17,7 +17,12 @@ class UtilFiles {
             options.inJustDecodeBounds = true
             BitmapFactory.decodeFile(imgFile.absolutePath, options)
             val options2 = BitmapFactory.Options()
-            options2.inSampleSize = calculateInSampleSize(options, maxWidth, maxHeight)
+            options2.inSampleSize =
+                calculateInSampleSize(
+                    options,
+                    maxWidth,
+                    maxHeight
+                )
             val myBitmap = BitmapFactory.decodeFile(imgFile.absolutePath, options2)
             imageView.setImageBitmap(myBitmap)
         }

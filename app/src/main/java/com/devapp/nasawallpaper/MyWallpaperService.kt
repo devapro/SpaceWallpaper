@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import com.devapp.nasawallpaper.logic.WallPapersRotator
+import com.devapp.nasawallpaper.utils.UtilSensors
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean

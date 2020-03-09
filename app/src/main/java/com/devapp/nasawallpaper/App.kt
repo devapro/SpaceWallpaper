@@ -12,7 +12,7 @@ import com.devapp.nasawallpaper.logic.controllers.DownloadImageController
 import com.devapp.nasawallpaper.storage.database.DataRepository
 import com.devapp.nasawallpaper.storage.database.RoomDataRepository
 import com.devapp.nasawallpaper.storage.serverapi.FireBaseServerApi
-import com.devapp.nasawallpaper.storage.serverapi.ServerApi
+import com.devapp.nasawallpaper.utils.UtilSensors
 import com.google.firebase.firestore.FirebaseFirestore
 
 class App : MultiDexApplication(){
@@ -45,7 +45,7 @@ class App : MultiDexApplication(){
         dataRepository = RoomDataRepository(dataBase)
         val serverApi = FireBaseServerApi(FirebaseFirestore.getInstance())
         val dataController = DataController(dataRepository, serverApi)
-        downloadController = DownloadImageController(dataRepository, appStorage)
+        downloadController = DownloadImageController(applicationContext, dataRepository, appStorage)
 
         appController = AppController(dataController)
 

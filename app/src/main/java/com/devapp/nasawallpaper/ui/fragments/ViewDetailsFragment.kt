@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper.ui
+package com.devapp.nasawallpaper.ui.fragments
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -13,7 +13,8 @@ import com.devapp.nasawallpaper.logic.viewmodels.ViewDetailsViewModel
 class ViewDetailsFragment : Fragment() {
 
     companion object {
-        fun newInstance() = ViewDetailsFragment()
+        fun newInstance() =
+            ViewDetailsFragment()
     }
 
     private lateinit var viewModel: ViewDetailsViewModel

@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper
+package com.devapp.nasawallpaper.utils
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -66,7 +66,12 @@ fun calculateInSampleSize(
 ): Int {
     val height = options.outHeight
     val width = options.outWidth
-    return calculateInSampleSize(height, width, reqWidth, reqHeight)
+    return calculateInSampleSize(
+        height,
+        width,
+        reqWidth,
+        reqHeight
+    )
 }
 
 fun calculateInSampleSize(height: Int, width: Int, reqWidth: Int, reqHeight: Int): Int {

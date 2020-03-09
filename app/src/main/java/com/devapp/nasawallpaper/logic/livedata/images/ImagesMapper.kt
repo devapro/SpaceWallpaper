@@ -2,7 +2,6 @@ package com.devapp.nasawallpaper.logic.livedata.images
 
 import com.devapp.nasawallpaper.storage.database.models.DbEntityImage
 import com.devapp.nasawallpaper.logic.entity.EntityImage
-import java.util.*
 import kotlin.collections.ArrayList
 
 class ImagesMapper {
@@ -27,7 +26,6 @@ class ImagesMapper {
         for (image in images) {
             result.add(map(image))
         }
-     //   result.reverse()
         return result
     }
 }

@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper
+package com.devapp.nasawallpaper.utils
 
 import android.app.Activity
 import android.content.Context
@@ -61,7 +61,9 @@ class UtilPermission {
 
         if (requestPerms.isNotEmpty()) {
             @Permission val perms = requestPerms.toTypedArray()
-            ActivityCompat.requestPermissions((fragment.activity as Activity), perms, RESULT_CODE)
+            ActivityCompat.requestPermissions((fragment.activity as Activity), perms,
+                RESULT_CODE
+            )
             return false
         }
 
@@ -82,7 +84,9 @@ class UtilPermission {
 
         if (requestPerms.isNotEmpty()) {
             @Permission val perms = requestPerms.toTypedArray()
-            ActivityCompat.requestPermissions(activity, perms, RESULT_CODE)
+            ActivityCompat.requestPermissions(activity, perms,
+                RESULT_CODE
+            )
             return false
         }
 
@@ -106,7 +110,8 @@ class UtilPermission {
         fun result(@Permission grantedPerms: Array<String>)
     }
 
-    abstract class PermissionCallback(@Permission val requestPerms: Array<String>) : IPermissionsResults {
+    abstract class PermissionCallback(@Permission val requestPerms: Array<String>) :
+        IPermissionsResults {
 
         override fun result(@Permission grantedPerms: Array<String>) {
             var grandAll = true

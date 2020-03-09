@@ -1,7 +1,10 @@
-package com.devapp.nasawallpaper
+package com.devapp.nasawallpaper.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.devapp.nasawallpaper.R
+import com.devapp.nasawallpaper.utils.Permission
+import com.devapp.nasawallpaper.utils.UtilPermission
 
 class MainActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper;
+package com.devapp.nasawallpaper.utils;
 
 import android.Manifest;
 

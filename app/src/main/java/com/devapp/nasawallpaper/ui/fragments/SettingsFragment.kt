@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper.ui
+package com.devapp.nasawallpaper.ui.fragments
 
 import android.app.WallpaperManager
 import android.content.ComponentName
@@ -10,12 +10,17 @@ import android.view.View
 import android.view.ViewGroup
 import com.devapp.nasawallpaper.*
 import com.devapp.nasawallpaper.logic.viewmodels.SettingsViewModel
+import com.devapp.nasawallpaper.ui.InfoActivity
+import com.devapp.nasawallpaper.ui.MainActivity
+import com.devapp.nasawallpaper.utils.Permission
+import com.devapp.nasawallpaper.utils.UtilPermission
 import kotlinx.android.synthetic.main.settings_fragment.*
 
 class SettingsFragment : NavigationFragment() {
 
     companion object {
-        fun newInstance() = SettingsFragment()
+        fun newInstance() =
+            SettingsFragment()
     }
 
     private lateinit var viewModel: SettingsViewModel
@@ -38,7 +43,7 @@ class SettingsFragment : NavigationFragment() {
             .permissionUtils
             .checkAndRequestPermissions(
                 this,
-                object : UtilPermission.PermissionCallback(Array(1){Permission.STORAGE_WRITE}){
+                object : UtilPermission.PermissionCallback(Array(1){ Permission.STORAGE_WRITE}){
                     override fun onSuccessGrantedAll() {
                         init()
                     }

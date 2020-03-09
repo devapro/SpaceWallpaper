@@ -1,5 +1,6 @@
 package com.devapp.nasawallpaper.storage.database
 
+import android.annotation.SuppressLint
 import androidx.room.InvalidationTracker
 import com.devapp.nasawallpaper.storage.database.models.DbEntityImage
 
@@ -36,6 +37,7 @@ class RoomDataRepository(private val appDataBase: AppDataBase) : DataRepository{
         return appDataBase.dataDao().getImagesAfterDate(sinceDate, limit)
     }
 
+    @SuppressLint("RestrictedApi")
     override fun addWeakObserver(observer: InvalidationTracker.Observer) {
         appDataBase.invalidationTracker.addWeakObserver(observer)
     }
