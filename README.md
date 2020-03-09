@@ -1,1 +1,1 @@
-Backgrounds for wallpapers are loading through the open API https://api.nasa.gov.
+Backgrounds for wallpapers are loading through the open API <https://api.nasa.gov>.

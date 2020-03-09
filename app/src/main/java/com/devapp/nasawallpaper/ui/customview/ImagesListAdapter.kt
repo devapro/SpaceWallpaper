@@ -33,6 +33,30 @@ class ImagesListAdapter(private val actionListener: ActionListener) : PagedListA
         })
     }
 
+    override fun onBindViewHolder(
+        holder: ImageViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        val image = getItem(position)
+        if(payloads.isNotEmpty()){
+            if (payloads[0] is EntityImage.Changed){
+                when(payloads[0]){
+                    EntityImage.Changed.LOCAL_PATH_UPDATE -> {
+                        holder.onBindMedia(image, object : ImageViewHolder.ActionListener{
+                            override suspend fun getImage(item: EntityImage): Drawable? {
+                                return actionListener.getImage(item)
+                            }
+                        })
+                    }
+                }
+            }
+        }
+        else {
+            super.onBindViewHolder(holder, position, payloads)
+        }
+    }
+
     override fun getItemId(position: Int): Long {
         return getItem(position)?.id?.toLong() ?: 0L
     }

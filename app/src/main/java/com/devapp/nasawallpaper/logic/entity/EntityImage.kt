@@ -14,6 +14,11 @@ class EntityImage(
     val isDeleted: Boolean
 ) {
 
+    enum class Changed {
+        LOCAL_PATH_UPDATE,
+        NONE
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -48,5 +53,12 @@ class EntityImage(
         result = 31 * result + createdAt.hashCode()
         result = 31 * result + isDeleted.hashCode()
         return result
+    }
+
+    fun getChanged(item: EntityImage): Changed{
+        if(!localPath.equals(item.localPath)){
+            return Changed.LOCAL_PATH_UPDATE
+        }
+        return Changed.NONE
     }
 }

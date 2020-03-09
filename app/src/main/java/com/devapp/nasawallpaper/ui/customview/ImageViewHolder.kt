@@ -22,6 +22,10 @@ class ImageViewHolder(itemView: View)  : RecyclerView.ViewHolder(itemView) {
 
     fun onBind(entityImage: EntityImage?, listener: ActionListener){
         progress.show()
+        onBindMedia(entityImage, listener)
+    }
+
+    fun onBindMedia(entityImage: EntityImage?, listener: ActionListener){
         entityImage?.run {
             job = GlobalScope.launch {
                 withContext(Dispatchers.IO){
@@ -37,6 +41,7 @@ class ImageViewHolder(itemView: View)  : RecyclerView.ViewHolder(itemView) {
 
     fun onUnBind(){
         job?.cancel()
+        progress.show()
     }
 
     interface ActionListener{

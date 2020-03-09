@@ -13,6 +13,8 @@ class ImageDiffUtil: DiffUtil.ItemCallback<EntityImage>() {
         return oldItem == newItem
     }
 
-    //TODO
-    // add payload. need update only if local path is updated
+    override fun getChangePayload(oldItem: EntityImage, newItem: EntityImage): Any? {
+        return oldItem.getChanged(newItem)
+    }
+
 }
