@@ -6,11 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.devapp.nasawallpaper.App
 
 import com.devapp.nasawallpaper.R
 import com.devapp.nasawallpaper.logic.viewmodels.ViewDetailsViewModel
 
-class ViewDetailsFragment : Fragment() {
+class ViewDetailsFragment : NavigationFragment() {
 
     companion object {
         fun newInstance() =
@@ -28,8 +29,13 @@ class ViewDetailsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ViewDetailsViewModel::class.java)
-        // TODO: Use the ViewModel
+        val args = ViewDetailsFragmentArgs.fromBundle(arguments!!)
+        val app = (activity!!.application as App)
+        viewModel = ViewModelProviders.of(this, ViewDetailsViewModel.createFactory(app, app.dataRepository)).get(ViewDetailsViewModel::class.java)
+        viewModel.imageId = args.imageId
+
+        displayHome()
+        setTitle(getString(R.string.app_name))
     }
 
 }

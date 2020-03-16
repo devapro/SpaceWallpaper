@@ -6,7 +6,9 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import com.devapp.nasawallpaper.logic.entity.EntityImage
 
-class ImagesListAdapter(private val actionListener: ActionListener) : PagedListAdapter<EntityImage, ImageViewHolder>(POST_COMPARATOR) {
+class ImagesListAdapter : PagedListAdapter<EntityImage, ImageViewHolder>(POST_COMPARATOR) {
+
+    var actionListener: ImageList.ActionListener? = null
 
     companion object {
         val POST_COMPARATOR = ImageDiffUtil()
@@ -23,11 +25,7 @@ class ImagesListAdapter(private val actionListener: ActionListener) : PagedListA
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         val image = getItem(position)
-        holder.onBind(image, object : ImageViewHolder.ActionListener{
-            override suspend fun getImage(item: EntityImage): Drawable? {
-                return actionListener.getImage(item)
-            }
-        })
+        holder.onBind(image, listener)
     }
 
     override fun onBindViewHolder(
@@ -40,11 +38,7 @@ class ImagesListAdapter(private val actionListener: ActionListener) : PagedListA
             if (payloads[0] is EntityImage.Changed){
                 when(payloads[0]){
                     EntityImage.Changed.LOCAL_PATH_UPDATE -> {
-                        holder.onBindMedia(image, object : ImageViewHolder.ActionListener{
-                            override suspend fun getImage(item: EntityImage): Drawable? {
-                                return actionListener.getImage(item)
-                            }
-                        })
+                        holder.onBindMedia(image, listener)
                     }
                 }
             }
@@ -63,7 +57,13 @@ class ImagesListAdapter(private val actionListener: ActionListener) : PagedListA
         holder.onUnBind()
     }
 
-    interface ActionListener{
-        suspend fun getImage(item: EntityImage): Drawable?
+    private val listener = object : ImageViewHolder.ActionListener{
+        override suspend fun getImage(item: EntityImage): Drawable? {
+            return actionListener?.getImage(item)
+        }
+
+        override fun onImageClick(item: EntityImage) {
+            actionListener?.onImageClick(item)
+        }
     }
 }

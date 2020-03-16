@@ -31,7 +31,11 @@ class MainFragment : NavigationFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, MainViewModel.createFactory(activity!!.application, (activity!!.application as App).downloadController)).get(MainViewModel::class.java)
+
+        val nav = findNavController()
+        val app = (activity!!.application as App)
+
+        viewModel = ViewModelProviders.of(this, MainViewModel.createFactory(app, app.downloadController, nav)).get(MainViewModel::class.java)
 
         setTitle(getString(R.string.app_name))
 

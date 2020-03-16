@@ -14,16 +14,16 @@ class ImageList(contetxt: Context, attrs: AttributeSet?, defStyle: Int) : Recycl
     constructor(contetxt: Context) : this(contetxt, null, 0)
 
     var actionListener : ActionListener? = null
+    set(value) {
+        (adapter as ImagesListAdapter).actionListener = value
+        field = value
+    }
 
     init {
         layoutManager = LinearLayoutManager(context, VERTICAL, false)
         itemAnimator = DefaultItemAnimator()
         setHasFixedSize(true)
-        adapter = ImagesListAdapter(object : ImagesListAdapter.ActionListener {
-            override suspend fun getImage(item: EntityImage): Drawable? {
-                return actionListener?.getImage(item)
-            }
-        })
+        adapter = ImagesListAdapter()
     }
 
     fun submitList(list: PagedList<EntityImage>){
@@ -32,5 +32,6 @@ class ImageList(contetxt: Context, attrs: AttributeSet?, defStyle: Int) : Recycl
 
     interface ActionListener{
         suspend fun getImage(item: EntityImage): Drawable?
+        fun onImageClick(item: EntityImage)
     }
 }

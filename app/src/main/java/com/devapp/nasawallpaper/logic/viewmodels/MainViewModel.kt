@@ -7,6 +7,7 @@ import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.devapp.nasawallpaper.App
@@ -14,10 +15,11 @@ import com.devapp.nasawallpaper.logic.controllers.DownloadImageController
 import com.devapp.nasawallpaper.logic.entity.EntityImage
 import com.devapp.nasawallpaper.logic.livedata.images.ImagesDataSourceFactory
 import com.devapp.nasawallpaper.ui.customview.ImageList
+import com.devapp.nasawallpaper.ui.fragments.MainFragmentDirections
 import com.devapp.nasawallpaper.utils.imageLoader.GlideDrawableLoader
 import java.io.File
 
-class MainViewModel(private val app: Application, private val downloadController: DownloadImageController) : BaseViewModel(app) {
+class MainViewModel(private val app: Application, private val downloadController: DownloadImageController, private val nav: NavController) : BaseViewModel(app) {
     private val config = PagedList.Config.Builder()
         .setEnablePlaceholders(false)
         .setInitialLoadSizeHint(20)
@@ -33,8 +35,12 @@ class MainViewModel(private val app: Application, private val downloadController
         .build()
 
     companion object {
-        fun createFactory(application: Application, downloadController: DownloadImageController) : ViewModelProvider.Factory {
-            return ViewModelFactory(application, downloadController)
+        fun createFactory(
+            application: Application,
+            downloadController: DownloadImageController,
+            nav: NavController
+        ) : ViewModelProvider.Factory {
+            return ViewModelFactory(application, downloadController, nav)
         }
     }
 
@@ -56,13 +62,18 @@ class MainViewModel(private val app: Application, private val downloadController
                     )
                 return loader.load(Uri.fromFile(f), 1000)
             }
+
+            override fun onImageClick(item: EntityImage) {
+                val direction = MainFragmentDirections.actionMainFragmentToViewDetailsFragment(item.id)
+                nav.navigate(direction)
+            }
         }
     }
 
     @Suppress("UNCHECKED_CAST")
-    class ViewModelFactory(private val application: Application, private val downloadController: DownloadImageController): ViewModelProvider.NewInstanceFactory() {
+    class ViewModelFactory(private val application: Application, private val downloadController: DownloadImageController, private val nav: NavController): ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            val viewModel = MainViewModel(application, downloadController)
+            val viewModel = MainViewModel(application, downloadController, nav)
             return viewModel as T
         }
     }

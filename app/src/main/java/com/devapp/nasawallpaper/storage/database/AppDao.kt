@@ -52,4 +52,7 @@ interface AppDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(items: List<DbEntityImage>)
+
+    @Query("SELECT * FROM wallpaper WHERE _id = :id LIMIT 1")
+    fun getImageInfoById(id: Int): DbEntityImage?
 }

@@ -2,14 +2,14 @@ package com.devapp.nasawallpaper.logic.livedata.images
 
 import androidx.paging.ItemKeyedDataSource
 import androidx.room.InvalidationTracker
-import com.devapp.nasawallpaper.storage.database.AppDataBase
 import com.devapp.nasawallpaper.storage.database.models.DbEntityImage
 import com.devapp.nasawallpaper.logic.entity.EntityImage
 import com.devapp.nasawallpaper.storage.database.DataRepository
+import com.devapp.nasawallpaper.storage.database.ImageMapper
 
 class ImagesDataSource (private val dataRepository: DataRepository) : ItemKeyedDataSource<Long, EntityImage>(){
 
-    private val mapper = ImagesMapper()
+    private val mapper = ImageMapper()
 
     private val tables = arrayOf("wallpaper")
 

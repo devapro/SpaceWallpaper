@@ -1,32 +1,28 @@
 package com.devapp.nasawallpaper.storage.database
 
 import com.devapp.nasawallpaper.storage.database.models.DbEntityImage
-import com.devapp.nasawallpaper.storage.serverapi.entity.ImageServerApiModel
-import java.util.*
+import com.devapp.nasawallpaper.logic.entity.EntityImage
 import kotlin.collections.ArrayList
 
 class ImageMapper {
-    fun map(image: ImageServerApiModel): DbEntityImage {
-        return DbEntityImage(
-            0,
+    fun map(image: DbEntityImage): EntityImage {
+        return EntityImage(
+            image.id ?: 0,
             image.name,
-            0,
+            image.showCount,
             image.description,
             image.collection,
             image.url,
-            image.mediaType,
-            null,
+            image.type,
+            image.localPath,
             image.urlHd,
-            image.id,
-            image.createAt,
-            Date().time,
-            false,
-            false
+            image.createdAt,
+            image.isDeleted
         )
     }
 
-    fun map(images: List<ImageServerApiModel>): List<DbEntityImage> {
-        val result = ArrayList<DbEntityImage>()
+    fun map(images: List<DbEntityImage>): List<EntityImage> {
+        val result = ArrayList<EntityImage>()
         for (image in images) {
             result.add(map(image))
         }

@@ -37,6 +37,10 @@ class ImageViewHolder(itemView: View)  : RecyclerView.ViewHolder(itemView) {
                 }
             }
         }
+
+        image.setOnClickListener {
+            entityImage?.let { listener.onImageClick(entityImage) }
+        }
     }
 
     fun onUnBind(){
@@ -46,5 +50,6 @@ class ImageViewHolder(itemView: View)  : RecyclerView.ViewHolder(itemView) {
 
     interface ActionListener{
         suspend fun getImage(item: EntityImage): Drawable?
+        fun onImageClick(item: EntityImage)
     }
 }

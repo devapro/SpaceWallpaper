@@ -9,6 +9,10 @@ class RoomDataRepository(private val appDataBase: AppDataBase) : DataRepository{
         return appDataBase.dataDao().updateLocalPath(id, path)
     }
 
+    override fun getImageInfoById(id: Int): DbEntityImage? {
+        return appDataBase.dataDao().getImageInfoById(id)
+    }
+
     override fun saveItems(items: List<DbEntityImage>) {
         appDataBase.dataDao().insert(items)
     }

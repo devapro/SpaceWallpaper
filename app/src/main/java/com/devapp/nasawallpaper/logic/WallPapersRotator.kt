@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import com.devapp.nasawallpaper.logic.controllers.DownloadImageController
-import com.devapp.nasawallpaper.logic.livedata.images.ImagesMapper
+import com.devapp.nasawallpaper.storage.database.ImageMapper
 import com.devapp.nasawallpaper.storage.database.AppDataBase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -12,7 +12,7 @@ import java.io.ByteArrayOutputStream
 
 class WallPapersRotator(private val dataBase: AppDataBase, private val downloadImageController: DownloadImageController) {
     var currentBitmap : Bitmap? = null
-    private val mapper = ImagesMapper()
+    private val mapper = ImageMapper()
     suspend fun getNextImage() : Boolean {
         return withContext(Dispatchers.IO){
             val lastItems = dataBase.dataDao().getNewestItems(10)
