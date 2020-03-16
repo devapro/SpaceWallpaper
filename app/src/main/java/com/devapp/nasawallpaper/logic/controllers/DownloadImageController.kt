@@ -4,9 +4,10 @@ import android.content.Context
 import com.devapp.nasawallpaper.logic.AppStorage
 import com.devapp.nasawallpaper.logic.entity.EntityImage
 import com.devapp.nasawallpaper.storage.database.DataRepository
-import com.devapp.nasawallpaper.utils.GlideImageLoader
+import com.devapp.nasawallpaper.utils.imageLoader.GlideImageLoader
 import com.devapp.nasawallpaper.utils.copy
 import com.devapp.nasawallpaper.utils.getFileName
+import com.devapp.nasawallpaper.utils.imageLoader.ImageLoader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -29,32 +30,36 @@ class DownloadImageController(private val context: Context, private val dataRepo
                 clearedUrl = "http:$clearedUrl"
             }
 
-            val loader = GlideImageLoader(object : GlideImageLoader.ActionListener{
-                override fun onStart() {
+            val loader =
+                GlideImageLoader(
+                    object :
+                        ImageLoader.ActionListener {
+                        override fun onStart() {
 
-                }
+                        }
 
-                override fun onProgress(progress: Int) {
+                        override fun onProgress(progress: Int) {
 
-                }
+                        }
 
-                override fun onEnd(cacheFile: File?) {
-                    cacheFile.let {
-                        val cacheDir = appStorage.getCacheDirectory()
-                        var imageDirectory = appStorage.getImagesDirectory()
-                        val imageFile = File(imageDirectory ?: cacheDir, fileName)
-                        try {
-                            copy(cacheFile, imageFile)
-                            imageFile.run {
-                                dataRepository.updateLocalPath(item.id, absolutePath)
+                        override fun onEnd(cacheFile: File?) {
+                            cacheFile.let {
+                                val cacheDir = appStorage.getCacheDirectory()
+                                var imageDirectory = appStorage.getImagesDirectory()
+                                val imageFile = File(imageDirectory ?: cacheDir, fileName)
+                                try {
+                                    copy(cacheFile, imageFile)
+                                    imageFile.run {
+                                        dataRepository.updateLocalPath(item.id, absolutePath)
+                                    }
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
                             }
                         }
-                        catch (e: Exception){
-                            e.printStackTrace()
-                        }
-                    }
-                }
-            }, context)
+                    },
+                    context
+                )
             loader.loadToFile(clearedUrl)
         }
     }

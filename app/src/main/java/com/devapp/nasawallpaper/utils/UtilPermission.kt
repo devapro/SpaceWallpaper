@@ -64,6 +64,7 @@ class UtilPermission {
             ActivityCompat.requestPermissions((fragment.activity as Activity), perms,
                 RESULT_CODE
             )
+            resultListeners.add(callback)
             return false
         }
 

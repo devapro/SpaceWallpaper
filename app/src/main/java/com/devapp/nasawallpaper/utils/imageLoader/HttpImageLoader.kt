@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper.utils
+package com.devapp.nasawallpaper.utils.imageLoader
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -8,8 +8,11 @@ import java.io.File
 import java.io.FileOutputStream
 import java.util.*
 
-class HttpImageLoader {
+class HttpImageLoader : ImageLoader {
     private val client = OkHttpClient()
+    override fun loadToFile(url: String) {
+
+    }
 //    fun loadToFile(url: String): File? {
 //        val request: Request = Request.Builder().url(url).build()
 //        val fileName = Date().time.toString() + ".png"

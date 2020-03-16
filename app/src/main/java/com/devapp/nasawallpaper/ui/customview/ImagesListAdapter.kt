@@ -4,10 +4,7 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
-import com.devapp.nasawallpaper.utils.UtilFiles
 import com.devapp.nasawallpaper.logic.entity.EntityImage
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class ImagesListAdapter(private val actionListener: ActionListener) : PagedListAdapter<EntityImage, ImageViewHolder>(POST_COMPARATOR) {
 

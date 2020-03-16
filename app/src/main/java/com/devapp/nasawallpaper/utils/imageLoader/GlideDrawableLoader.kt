@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper.utils
+package com.devapp.nasawallpaper.utils.imageLoader
 
 import android.content.Context
 import android.graphics.drawable.Drawable
