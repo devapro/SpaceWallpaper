@@ -8,5 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlNormal">@color/colorWhite</item>
     </style>
+    
+    <style name="ExpandedTitleTextAppearance">
+        <item name="android:textSize">20sp</item>
+        <item name="android:lines">3</item>
+    </style>
 
 </resources>

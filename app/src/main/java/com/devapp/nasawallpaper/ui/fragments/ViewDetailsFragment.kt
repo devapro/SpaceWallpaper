@@ -2,13 +2,11 @@ package com.devapp.nasawallpaper.ui.fragments
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.devapp.nasawallpaper.App
-
 import com.devapp.nasawallpaper.R
 import com.devapp.nasawallpaper.logic.viewmodels.ViewDetailsViewModel
 import kotlinx.android.synthetic.main.view_details_fragment.*
@@ -43,8 +41,10 @@ class ViewDetailsFragment : NavigationFragment() {
         displayHome()
         setTitle(getString(R.string.app_name))
 
+        collapsingToolbar.setExpandedTitleTextAppearance(R.style.ExpandedTitleTextAppearance)
+
         viewModel.imageInfo.observe(viewLifecycleOwner, Observer {
-            name.text = it.name
+            collapsingToolbar.title = it.name
             description.text = it.description
             GlobalScope.launch {
                 withContext(Dispatchers.IO){
