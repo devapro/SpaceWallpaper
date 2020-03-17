@@ -5,17 +5,15 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.util.Log
 
 class UtilSensors private constructor(context: Context){
-    val sensorManager : SensorManager
-    val accelerometr : Sensor
+    private val sensorManager : SensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    private val accelerometer : Sensor
 
     var listener : SensorEventListener? = null
 
     init {
-        sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        accelerometr = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
     }
 
     fun start(listenerUpdating: SensorChangeListener?){
@@ -23,8 +21,6 @@ class UtilSensors private constructor(context: Context){
 
             var lastX : Float = 0f
             var lastY : Float = 0f
-          //  var lastZ : Float = 0f
-
             var lastUpdate = System.currentTimeMillis()
 
             override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
@@ -35,7 +31,6 @@ class UtilSensors private constructor(context: Context){
                 // get the change of the x,y,z values of the accelerometer
                 var deltaX = event?.values!![0]
                 var deltaY = event.values[1]
-          //      var deltaZ = Math.abs(lastZ - event.values[2])
 
                 // if the change is below 2, it is just plain noise
                 if (Math.abs(deltaX) < 2)
@@ -44,29 +39,16 @@ class UtilSensors private constructor(context: Context){
                     deltaY = 0f
 
                 if(System.currentTimeMillis() - lastUpdate > 100){
-//                    if(Math.abs(lastX - deltaX) > 0.5 || Math.abs(lastY - deltaY) > 0.5) {
-//                        listenerUpdating?.onUpdate(deltaX, deltaY)
-//                        Log.d("UtilSensors", "deltaX " + deltaX)
-//                        Log.d("UtilSensors", "deltaY " + deltaY)
-//                    }
                     if(Math.abs(lastX - deltaX) > 0.05) {
                         listenerUpdating?.onUpdate(deltaX, deltaY)
-                        Log.d("UtilSensors", "deltaX " + deltaX)
-                        Log.d("UtilSensors", "deltaY " + deltaY)
                     }
                     lastX = deltaX
                     lastY = deltaY
                 }
                 lastUpdate = System.currentTimeMillis()
-//                Log.d("UtilSensors", "deltaX " + deltaX)
-//                Log.d("UtilSensors", "deltaY " + deltaY)
-
-             //   Log.d("UtilSensors", "deltaZ " + deltaZ)
-
-
             }
         }
-        sensorManager.registerListener(listener, accelerometr, SensorManager.SENSOR_DELAY_NORMAL)
+        sensorManager.registerListener(listener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
     }
 
     fun stop(){

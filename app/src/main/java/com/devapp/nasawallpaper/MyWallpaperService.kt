@@ -7,7 +7,6 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
 import android.service.wallpaper.WallpaperService
-import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import com.devapp.nasawallpaper.logic.WallPapersRotator
@@ -15,7 +14,6 @@ import com.devapp.nasawallpaper.utils.UtilSensors
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
-
 
 class MyWallpaperService: WallpaperService() {
     override fun onCreateEngine(): Engine {
@@ -29,7 +27,6 @@ class MyWallpaperService: WallpaperService() {
         var width = 0
         var height = 0
         private var visible = true
-        private var touchEnabled: Boolean
         private var va : ValueAnimator? = null
         private var animation = true
         private var wallPapersRotator: WallPapersRotator
@@ -73,11 +70,6 @@ class MyWallpaperService: WallpaperService() {
             }
         }
 
-        init {
-            touchEnabled = false
-          //  handler.post(drawRunner)
-        }
-
         override fun onSurfaceRedrawNeeded(holder: SurfaceHolder?) {
             super.onSurfaceRedrawNeeded(holder)
             handler.post(drawRunner)
@@ -109,22 +101,6 @@ class MyWallpaperService: WallpaperService() {
 //                    if (canvas != null) {
 //                        canvas.drawColor(Color.BLACK)
 //
-//                        val downloader = UtilDownloader()
-//                        if(downloader.checkFile(applicationContext, "ElectricMilkyWay_Pedretti_1920.jpg")){
-//                            val bMap = BitmapFactory.decodeFile(downloader.getFile(applicationContext, "ElectricMilkyWay_Pedretti_1920.jpg").absolutePath)
-//                            val d: Drawable = BitmapDrawable(bMap)
-//                            d.setBounds(0, width, 0, height)
-//                            d.draw(canvas)
-//                        }
-//                        else{
-//                            circles.clear()
-//                            circles.add(
-//                                MyPoint(
-//                                    java.lang.String.valueOf(circles.size + 1), x, y
-//                                )
-//                            )
-//                            drawCircles(canvas, circles)
-//                        }
 //                    }
 //                } finally {
 //                    if (canvas != null) holder.unlockCanvasAndPost(canvas)
@@ -147,7 +123,7 @@ class MyWallpaperService: WallpaperService() {
         val isRun = AtomicBoolean()
         var lastNewX = 0f
         var lastNewY = 0f
-        var animationStartAt = 0L
+
         private fun animated(newX: Double, newY: Double){
             lastNewX = newX.toFloat()
             lastNewY = newY.toFloat()
@@ -155,13 +131,6 @@ class MyWallpaperService: WallpaperService() {
             if(va?.isRunning == true && Math.abs(lastX) - Math.abs(lastNewX) < 0.5){
                 return
             }
-
-//            if(isRun.get() && System.currentTimeMillis() - animationStartAt < 100){
-//                return
-//            }
-//            isRun.set(true)
-//
-//            animationStartAt = System.currentTimeMillis()
 
             va?.cancel()
 
@@ -184,16 +153,10 @@ class MyWallpaperService: WallpaperService() {
 
                 override fun onAnimationEnd(animation: Animator?) {
                     isRun.set(false)
-//                    if(Math.abs(lastNewX - lastX) != 0f || Math.abs(lastNewY - lastY) != 0f){
-//                        animated(lastNewX * 1.0, lastNewY * 1.0)
-//                    }
                 }
 
                 override fun onAnimationCancel(animation: Animator?) {
                     isRun.set(false)
-//                    if(Math.abs(lastNewX - lastX) != 0f || Math.abs(lastNewY - lastY) != 0f){
-//                        animated(lastNewX * 1.0, lastNewY * 1.0)
-//                    }
                 }
 
                 override fun onAnimationStart(animation: Animator?) {
@@ -272,49 +235,39 @@ class MyWallpaperService: WallpaperService() {
 
             if(w < width && h < height){
                 if(width - w >= height - h){
-                    Log.d("DRAWWWWW", "C 1")
-                    var r = width.toFloat() / w.toFloat()
+                    val r = width.toFloat() / w.toFloat()
                     w = (w * r).toInt()
                     h = (h * r).toInt()
                 }
                 else{
-                    Log.d("DRAWWWWW", "C 2")
-                    var r = height.toFloat() / h.toFloat()
+                    val r = height.toFloat() / h.toFloat()
                     w = (w * r).toInt()
                     h = (h * r).toInt()
                 }
             }
             else if (w < width){
-                Log.d("DRAWWWWW", "C 3")
-                var r = width.toFloat() / w.toFloat()
+                val r = width.toFloat() / w.toFloat()
                 w = (w * r).toInt()
                 h = (h * r).toInt()
             }
             else if(h < height) {
-                Log.d("DRAWWWWW", "C 4")
-                var r = height.toFloat() / h.toFloat()
+                val r = height.toFloat() / h.toFloat()
                 w = (w * r).toInt()
                 h = (h * r).toInt()
             }
             else if(w > width && h > height) {
                 if(w - width >= h - height){
-                    Log.d("DRAWWWWW", "C 5")
-                    var r = width.toFloat() / w.toFloat()
+                    val r = width.toFloat() / w.toFloat()
                     w = (w * r).toInt()
                     h = (h * r).toInt()
                 }
-                else{
-                    Log.d("DRAWWWWW", "C 6")
-                    var r = height.toFloat() / h.toFloat()
+                else {
+                    val r = height.toFloat() / h.toFloat()
                     w = (w * r).toInt()
                     h = (h * r).toInt()
                 }
             }
 
-            Log.d("DRAWWWWW", "w " + w)
-            Log.d("DRAWWWWW", "h " + h)
-            Log.d("DRAWWWWW", "width " + width)
-            Log.d("DRAWWWWW", "height " + height)
             canvas.drawColor(Color.BLACK)
             var left = (width - w)/2f
             var top = (height - h)/2f
