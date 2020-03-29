@@ -39,7 +39,7 @@ interface AppDao {
     fun getNewestItems(limit: Int): List<DbEntityImage>
 
     @Query("UPDATE wallpaper SET localPath = :path WHERE _id = :id")
-    fun updateLocalPath(id: Int, path: String): Int
+    fun updateLocalPath(id: Int, path: String?): Int
 
     @Query("UPDATE wallpaper SET showCount = :newCount WHERE _id = :id")
     fun updateViewCount(id: Int, newCount: Int): Int

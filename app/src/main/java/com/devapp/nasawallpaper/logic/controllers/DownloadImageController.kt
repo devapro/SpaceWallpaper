@@ -1,6 +1,7 @@
 package com.devapp.nasawallpaper.logic.controllers
 
 import android.content.Context
+import android.util.Log
 import com.devapp.nasawallpaper.logic.AppStorage
 import com.devapp.nasawallpaper.logic.entity.EntityImage
 import com.devapp.nasawallpaper.storage.database.DataRepository
@@ -14,7 +15,6 @@ import java.io.File
 import java.lang.Exception
 
 class DownloadImageController(private val context: Context, private val dataRepository: DataRepository, private val appStorage: AppStorage) {
-
 
     suspend fun downloadImage(
         item: EntityImage
@@ -34,30 +34,31 @@ class DownloadImageController(private val context: Context, private val dataRepo
                 GlideImageLoader(
                     object :
                         ImageLoader.ActionListener {
-                        override fun onStart() {
+                            override fun onStart() {
+                                Log.d("DownloadImageController", "onStart $imageUrl")
+                            }
 
-                        }
+                            override fun onProgress(progress: Int) {
+                                Log.d("DownloadImageController", "onProgress $imageUrl $progress")
+                            }
 
-                        override fun onProgress(progress: Int) {
-
-                        }
-
-                        override fun onEnd(cacheFile: File?) {
-                            cacheFile.let {
-                                val cacheDir = appStorage.getCacheDirectory()
-                                var imageDirectory = appStorage.getImagesDirectory()
-                                val imageFile = File(imageDirectory ?: cacheDir, fileName)
-                                try {
-                                    copy(cacheFile, imageFile)
-                                    imageFile.run {
-                                        dataRepository.updateLocalPath(item.id, absolutePath)
+                            override fun onEnd(cacheFile: File?) {
+                                Log.d("DownloadImageController", "onEnd $imageUrl")
+                                cacheFile.let {
+                                    val cacheDir = appStorage.getCacheDirectory()
+                                    var imageDirectory = appStorage.getImagesDirectory()
+                                    val imageFile = File(imageDirectory ?: cacheDir, fileName)
+                                    try {
+                                        copy(cacheFile, imageFile)
+                                        imageFile.run {
+                                            dataRepository.updateLocalPath(item.id, absolutePath)
+                                        }
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
                                     }
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
                                 }
                             }
-                        }
-                    },
+                        },
                     context
                 )
             loader.loadToFile(clearedUrl)

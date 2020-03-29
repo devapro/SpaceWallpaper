@@ -10,13 +10,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.devapp.nasawallpaper.logic.controllers.DownloadImageController
 import com.devapp.nasawallpaper.logic.entity.EntityImage
+import com.devapp.nasawallpaper.logic.usecases.GetImageUseCase
 import com.devapp.nasawallpaper.storage.database.DataRepository
 import com.devapp.nasawallpaper.storage.database.ImageMapper
 import com.devapp.nasawallpaper.utils.imageLoader.GlideDrawableLoader
 import kotlinx.coroutines.*
 import java.io.File
 
-class ViewDetailsViewModel(private val app: Application, private val dataRepository: DataRepository, private val downloadController: DownloadImageController) : BaseViewModel(app) {
+class ViewDetailsViewModel(
+    private val app: Application,
+    private val dataRepository: DataRepository,
+    private val downloadController: DownloadImageController
+) : BaseViewModel(app) {
 
     var imageId: Int? = null
     set(value) {
@@ -53,21 +58,12 @@ class ViewDetailsViewModel(private val app: Application, private val dataReposit
 
     suspend fun getImageDrawable(): Drawable?{
         val item = imageInfo.value ?: return null
-
-        if(TextUtils.isEmpty(item.localPath)){
-            downloadController.downloadImage(item)
-            return null
-        }
-        val f = File(item.localPath)
-        if (!f.exists()){
-            downloadController.downloadImage(item)
-            return null
-        }
         val loader =
             GlideDrawableLoader(
                 app.applicationContext
             )
-        return loader.load(Uri.fromFile(f), 1000)
+        val useCase = GetImageUseCase(item, dataRepository, downloadController, loader)
+        return useCase.run()
     }
 
     override fun onCleared() {

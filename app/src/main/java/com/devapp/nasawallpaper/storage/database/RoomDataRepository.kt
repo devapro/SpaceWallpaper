@@ -5,7 +5,7 @@ import androidx.room.InvalidationTracker
 import com.devapp.nasawallpaper.storage.database.models.DbEntityImage
 
 class RoomDataRepository(private val appDataBase: AppDataBase) : DataRepository{
-    override fun updateLocalPath(id: Int, path: String): Int {
+    override fun updateLocalPath(id: Int, path: String?): Int {
         return appDataBase.dataDao().updateLocalPath(id, path)
     }
 

@@ -35,7 +35,7 @@ class MainFragment : NavigationFragment() {
         val nav = findNavController()
         val app = (activity!!.application as App)
 
-        viewModel = ViewModelProviders.of(this, MainViewModel.createFactory(app, app.downloadController, nav)).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, MainViewModel.createFactory(app, app.downloadController, app.dataRepository, nav)).get(MainViewModel::class.java)
 
         setTitle(getString(R.string.app_name))
 

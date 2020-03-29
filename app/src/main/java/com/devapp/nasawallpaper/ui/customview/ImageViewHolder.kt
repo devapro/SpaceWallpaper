@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import androidx.core.content.ContextCompat
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.recyclerview.widget.RecyclerView
 import com.devapp.nasawallpaper.R
@@ -21,18 +22,21 @@ class ImageViewHolder(itemView: View)  : RecyclerView.ViewHolder(itemView) {
     private var job: Job? = null
 
     fun onBind(entityImage: EntityImage?, listener: ActionListener){
-        progress.show()
         onBindMedia(entityImage, listener)
     }
 
     fun onBindMedia(entityImage: EntityImage?, listener: ActionListener){
+        progress.show()
+        image.setImageDrawable(ContextCompat.getDrawable(image.context, R.drawable.image_placeholder))
         entityImage?.run {
             job = GlobalScope.launch {
                 withContext(Dispatchers.IO){
                     val drawable = listener.getImage(entityImage)
-                    image.post {
-                        image.setImageDrawable(drawable)
-                        progress.hide()
+                    drawable?.let {
+                        image.post {
+                            image.setImageDrawable(it)
+                            progress.hide()
+                        }
                     }
                 }
             }

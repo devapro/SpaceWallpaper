@@ -14,12 +14,19 @@ import com.devapp.nasawallpaper.App
 import com.devapp.nasawallpaper.logic.controllers.DownloadImageController
 import com.devapp.nasawallpaper.logic.entity.EntityImage
 import com.devapp.nasawallpaper.logic.livedata.images.ImagesDataSourceFactory
+import com.devapp.nasawallpaper.logic.usecases.GetImageUseCase
+import com.devapp.nasawallpaper.storage.database.DataRepository
 import com.devapp.nasawallpaper.ui.customview.ImageList
 import com.devapp.nasawallpaper.ui.fragments.MainFragmentDirections
 import com.devapp.nasawallpaper.utils.imageLoader.GlideDrawableLoader
 import java.io.File
 
-class MainViewModel(private val app: Application, private val downloadController: DownloadImageController, private val nav: NavController) : BaseViewModel(app) {
+class MainViewModel(
+    private val app: Application,
+    private val downloadController: DownloadImageController,
+    private val dataRepository: DataRepository,
+    private val nav: NavController
+) : BaseViewModel(app) {
     private val config = PagedList.Config.Builder()
         .setEnablePlaceholders(false)
         .setInitialLoadSizeHint(20)
@@ -28,7 +35,7 @@ class MainViewModel(private val app: Application, private val downloadController
         .build()
 
     private val factory =
-        ImagesDataSourceFactory((app as App).dataRepository)
+        ImagesDataSourceFactory(dataRepository)
 
     val pagedList : LiveData<PagedList<EntityImage>> = LivePagedListBuilder<Long, EntityImage>(factory, config)
         .setInitialLoadKey(null)
@@ -38,29 +45,22 @@ class MainViewModel(private val app: Application, private val downloadController
         fun createFactory(
             application: Application,
             downloadController: DownloadImageController,
+            dataRepository: DataRepository,
             nav: NavController
         ) : ViewModelProvider.Factory {
-            return ViewModelFactory(application, downloadController, nav)
+            return ViewModelFactory(application, downloadController, dataRepository, nav)
         }
     }
 
     fun getImageListener() : ImageList.ActionListener {
         return object : ImageList.ActionListener {
-            override suspend fun getImage(item: EntityImage): Drawable? {
-                if(TextUtils.isEmpty(item.localPath)){
-                    downloadController.downloadImage(item)
-                    return null
-                }
-                val f = File(item.localPath)
-                if (!f.exists()){
-                    downloadController.downloadImage(item)
-                    return null
-                }
+            override suspend fun getImage(imageInfo: EntityImage): Drawable? {
                 val loader =
                     GlideDrawableLoader(
                         app.applicationContext
                     )
-                return loader.load(Uri.fromFile(f), 1000)
+                val useCase = GetImageUseCase(imageInfo, dataRepository, downloadController, loader)
+                return useCase.run()
             }
 
             override fun onImageClick(item: EntityImage) {
@@ -71,9 +71,14 @@ class MainViewModel(private val app: Application, private val downloadController
     }
 
     @Suppress("UNCHECKED_CAST")
-    class ViewModelFactory(private val application: Application, private val downloadController: DownloadImageController, private val nav: NavController): ViewModelProvider.NewInstanceFactory() {
+    class ViewModelFactory(
+        private val application: Application,
+        private val downloadController: DownloadImageController,
+        private val dataRepository: DataRepository,
+        private val nav: NavController
+    ): ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            val viewModel = MainViewModel(application, downloadController, nav)
+            val viewModel = MainViewModel(application, downloadController, dataRepository, nav)
             return viewModel as T
         }
     }
