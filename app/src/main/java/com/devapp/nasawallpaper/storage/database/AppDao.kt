@@ -47,6 +47,9 @@ interface AppDao {
     @Query("UPDATE wallpaper SET isDeleted = 1 WHERE _id = :id")
     fun setDeleted(id: Int): Int
 
+    @Query("UPDATE wallpaper SET rate = :rate WHERE _id = :id")
+    fun setRate(id: Int, rate: Int): Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: DbEntityImage)
 

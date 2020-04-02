@@ -9,7 +9,7 @@
     <include
         layout="@layout/view_toolbar" />
 
-    <com.devapp.nasawallpaper.ui.customview.ImageList
+    <com.devapp.nasawallpaper.ui.customview.imageList.ImageList
         android:id="@+id/imagesList"
         android:layout_width="match_parent"
         android:layout_height="0dp"

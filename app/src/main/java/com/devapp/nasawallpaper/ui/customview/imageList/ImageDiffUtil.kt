@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper.ui.customview
+package com.devapp.nasawallpaper.ui.customview.imageList
 
 import androidx.recyclerview.widget.DiffUtil
 import com.devapp.nasawallpaper.logic.entity.EntityImage

@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper.ui.customview
+package com.devapp.nasawallpaper.ui.customview.imageList
 
 import android.graphics.drawable.Drawable
 import android.view.View
@@ -9,6 +9,7 @@ import androidx.core.widget.ContentLoadingProgressBar
 import androidx.recyclerview.widget.RecyclerView
 import com.devapp.nasawallpaper.R
 import com.devapp.nasawallpaper.logic.entity.EntityImage
+import com.devapp.nasawallpaper.ui.customview.RateBlock
 import kotlinx.coroutines.*
 
 class ImageViewHolder(itemView: View)  : RecyclerView.ViewHolder(itemView) {
@@ -18,11 +19,26 @@ class ImageViewHolder(itemView: View)  : RecyclerView.ViewHolder(itemView) {
     private val container = itemView.findViewById<RelativeLayout>(R.id.container)
     private val image = itemView.findViewById<ImageView>(R.id.image)
     private val progress = itemView.findViewById<ContentLoadingProgressBar>(R.id.progress)
+    private val rate = itemView.findViewById<RateBlock>(R.id.rate)
 
     private var job: Job? = null
 
     fun onBind(entityImage: EntityImage?, listener: ActionListener){
         onBindMedia(entityImage, listener)
+        onBindRate(entityImage, listener)
+    }
+
+    fun onBindRate(entityImage: EntityImage?, listener: ActionListener){
+        rate.setRate(entityImage?.rate ?: 0)
+        rate.actionListener = object : RateBlock.ActionListener {
+            override fun onClickUp() {
+                entityImage?.let { listener.onClickUp(entityImage) }
+            }
+
+            override fun onClickDown() {
+                entityImage?.let { listener.onClickDown(entityImage) }
+            }
+        }
     }
 
     fun onBindMedia(entityImage: EntityImage?, listener: ActionListener){
@@ -50,10 +66,13 @@ class ImageViewHolder(itemView: View)  : RecyclerView.ViewHolder(itemView) {
     fun onUnBind(){
         job?.cancel()
         progress.show()
+        rate.setRate(0)
     }
 
     interface ActionListener{
         suspend fun getImage(item: EntityImage): Drawable?
         fun onImageClick(item: EntityImage)
+        fun onClickUp(item: EntityImage)
+        fun onClickDown(item: EntityImage)
     }
 }

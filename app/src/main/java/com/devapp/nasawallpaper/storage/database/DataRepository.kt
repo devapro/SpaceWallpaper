@@ -13,5 +13,6 @@ interface DataRepository {
     fun getImagesAfterDate(sinceDate: Long, limit: Int): List<DbEntityImage>
     fun updateLocalPath(id: Int, path: String?): Int
     fun getImageInfoById(id: Int): DbEntityImage?
+    fun setRate(id: Int, rate: Int): Int
     fun addWeakObserver(observer: InvalidationTracker.Observer)
 }

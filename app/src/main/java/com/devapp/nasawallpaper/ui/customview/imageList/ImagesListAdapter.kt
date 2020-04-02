@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper.ui.customview
+package com.devapp.nasawallpaper.ui.customview.imageList
 
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
@@ -6,7 +6,9 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import com.devapp.nasawallpaper.logic.entity.EntityImage
 
-class ImagesListAdapter : PagedListAdapter<EntityImage, ImageViewHolder>(POST_COMPARATOR) {
+class ImagesListAdapter : PagedListAdapter<EntityImage, ImageViewHolder>(
+    POST_COMPARATOR
+) {
 
     var actionListener: ImageList.ActionListener? = null
 
@@ -20,7 +22,13 @@ class ImagesListAdapter : PagedListAdapter<EntityImage, ImageViewHolder>(POST_CO
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return ImageViewHolder(inflater.inflate(ImageViewHolder.LAYOUT_ID, parent, false))
+        return ImageViewHolder(
+            inflater.inflate(
+                ImageViewHolder.LAYOUT_ID,
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
@@ -40,6 +48,9 @@ class ImagesListAdapter : PagedListAdapter<EntityImage, ImageViewHolder>(POST_CO
                     EntityImage.Changed.LOCAL_PATH_UPDATE -> {
                         holder.onBindMedia(image, listener)
                     }
+                    EntityImage.Changed.RATE_CHANGE -> {
+                        holder.onBindRate(image, listener)
+                    }
                 }
             }
         }
@@ -57,13 +68,22 @@ class ImagesListAdapter : PagedListAdapter<EntityImage, ImageViewHolder>(POST_CO
         holder.onUnBind()
     }
 
-    private val listener = object : ImageViewHolder.ActionListener{
+    private val listener = object :
+        ImageViewHolder.ActionListener {
         override suspend fun getImage(item: EntityImage): Drawable? {
             return actionListener?.getImage(item)
         }
 
         override fun onImageClick(item: EntityImage) {
             actionListener?.onImageClick(item)
+        }
+
+        override fun onClickUp(item: EntityImage) {
+            actionListener?.onClickUp(item)
+        }
+
+        override fun onClickDown(item: EntityImage) {
+            actionListener?.onClickDown(item)
         }
     }
 }

@@ -2,24 +2,23 @@ package com.devapp.nasawallpaper.logic.viewmodels
 
 import android.app.Application
 import android.graphics.drawable.Drawable
-import android.net.Uri
-import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.devapp.nasawallpaper.App
 import com.devapp.nasawallpaper.logic.controllers.DownloadImageController
 import com.devapp.nasawallpaper.logic.entity.EntityImage
 import com.devapp.nasawallpaper.logic.livedata.images.ImagesDataSourceFactory
 import com.devapp.nasawallpaper.logic.usecases.GetImageUseCase
+import com.devapp.nasawallpaper.logic.usecases.SetRateUseCase
 import com.devapp.nasawallpaper.storage.database.DataRepository
-import com.devapp.nasawallpaper.ui.customview.ImageList
+import com.devapp.nasawallpaper.ui.customview.imageList.ImageList
 import com.devapp.nasawallpaper.ui.fragments.MainFragmentDirections
 import com.devapp.nasawallpaper.utils.imageLoader.GlideDrawableLoader
-import java.io.File
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val app: Application,
@@ -66,6 +65,18 @@ class MainViewModel(
             override fun onImageClick(item: EntityImage) {
                 val direction = MainFragmentDirections.actionMainFragmentToViewDetailsFragment(item.id)
                 nav.navigate(direction)
+            }
+
+            override fun onClickUp(item: EntityImage) {
+                GlobalScope.launch {
+                    SetRateUseCase(dataRepository, item.id, 1).run()
+                }
+            }
+
+            override fun onClickDown(item: EntityImage) {
+                GlobalScope.launch {
+                    SetRateUseCase(dataRepository, item.id, -1).run()
+                }
             }
         }
     }

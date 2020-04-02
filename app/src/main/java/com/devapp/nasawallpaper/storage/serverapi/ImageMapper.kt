@@ -21,7 +21,8 @@ class ImageMapper {
             image.createAt,
             Date().time,
             false,
-            false
+            false,
+            0
         )
     }
 

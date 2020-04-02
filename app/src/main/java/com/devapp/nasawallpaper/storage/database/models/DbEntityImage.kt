@@ -35,6 +35,8 @@ class DbEntityImage (
     @ColumnInfo(name = "premium", defaultValue = "0")
     val premium: Boolean,
     @ColumnInfo(name = "isDeleted", defaultValue = "0")
-    val isDeleted: Boolean
+    val isDeleted: Boolean,
+    @ColumnInfo(name = "rate", defaultValue = "0")
+    val rate: Int
 
 ) : Serializable

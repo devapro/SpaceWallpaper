@@ -17,7 +17,8 @@ class ImageMapper {
             image.localPath,
             image.urlHd,
             image.createdAt,
-            image.isDeleted
+            image.isDeleted,
+            image.rate
         )
     }
 
