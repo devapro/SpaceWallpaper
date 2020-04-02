@@ -45,6 +45,19 @@ class RoomDataRepository(private val appDataBase: AppDataBase) : DataRepository{
         return appDataBase.dataDao().getImagesAfterDate(sinceDate, limit)
     }
 
+    override fun getAllItems(limit: Int, minRate: Int): List<DbEntityImage> {
+        return appDataBase.dataDao().getNewestItems(limit, minRate)
+    }
+
+    override fun updateViewCount(id: Int, count: Int) {
+         appDataBase.dataDao().updateViewCount(id, count)
+    }
+
+    override fun setDeleted(id: Int) {
+         appDataBase.dataDao().setDeleted(id)
+    }
+
+
     @SuppressLint("RestrictedApi")
     override fun addWeakObserver(observer: InvalidationTracker.Observer) {
         appDataBase.invalidationTracker.addWeakObserver(observer)

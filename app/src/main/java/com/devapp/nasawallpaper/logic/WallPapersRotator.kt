@@ -5,17 +5,17 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import com.devapp.nasawallpaper.logic.controllers.DownloadImageController
 import com.devapp.nasawallpaper.storage.database.ImageMapper
-import com.devapp.nasawallpaper.storage.database.AppDataBase
+import com.devapp.nasawallpaper.storage.database.DataRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 
-class WallPapersRotator(private val dataBase: AppDataBase, private val downloadImageController: DownloadImageController) {
+class WallPapersRotator(private val dataRepository: DataRepository, private val downloadImageController: DownloadImageController) {
     var currentBitmap : Bitmap? = null
     private val mapper = ImageMapper()
     suspend fun getNextImage() : Boolean {
         return withContext(Dispatchers.IO){
-            val lastItems = dataBase.dataDao().getNewestItems(10)
+            val lastItems = dataRepository.getAllItems(100, 0)
             if(lastItems.isNotEmpty()){
                 val random = lastItems.sortedBy { it.showCount }
                 val item = random[0]
@@ -32,12 +32,12 @@ class WallPapersRotator(private val dataBase: AppDataBase, private val downloadI
                 if(bitmap != null){
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, blob)
                     currentBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, false)
-                    dataBase.dataDao().updateViewCount(item.id,
+                    dataRepository.updateViewCount(item.id,
                         (item.showCount?.plus(1) ?: 0)
                     )
                     return@withContext true
                 }
-                dataBase.dataDao().setDeleted(item.id)
+                dataRepository.setDeleted(item.id)
             }
             return@withContext false
         }

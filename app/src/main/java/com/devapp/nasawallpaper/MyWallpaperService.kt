@@ -34,7 +34,7 @@ class MyWallpaperService: WallpaperService() {
         init {
             val handlerThread = HandlerThread("MyHandlerThread")
             handlerThread.start()
-            wallPapersRotator = WallPapersRotator((application as App).dataBase, (application as App).downloadController)
+            wallPapersRotator = WallPapersRotator((application as App).dataRepository, (application as App).downloadController)
         }
 
         override fun onVisibilityChanged(visible: Boolean) {
