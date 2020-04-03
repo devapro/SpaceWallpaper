@@ -2,11 +2,15 @@ package com.devapp.nasawallpaper.storage.serverapi
 
 import com.devapp.nasawallpaper.storage.database.models.DbEntityImage
 import com.devapp.nasawallpaper.storage.serverapi.entity.ImageServerApiModel
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
 class ImageMapper {
     fun map(image: ImageServerApiModel): DbEntityImage {
+        val date = SimpleDateFormat("YYYY-MM-dd").parse(image.date)
         return DbEntityImage(
             0,
             image.name,
@@ -18,7 +22,7 @@ class ImageMapper {
             null,
             image.urlHd,
             image.id,
-            image.createAt,
+            date.time,
             Date().time,
             false,
             false,

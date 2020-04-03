@@ -5,6 +5,7 @@ import com.devapp.nasawallpaper.storage.database.models.DbEntityImage
 
 interface DataRepository {
     fun saveItems(items: List<DbEntityImage>)
+    fun saveItem(item: DbEntityImage)
     fun getLastUpdateTime(): Long?
     fun getLastItemTime(): Long?
     fun getImagesInitial(limit: Int): List<DbEntityImage>
@@ -18,4 +19,5 @@ interface DataRepository {
     fun updateViewCount(id: Int, count: Int)
     fun setDeleted(id: Int)
     fun addWeakObserver(observer: InvalidationTracker.Observer)
+    fun getByFireId(fireId: String): DbEntityImage?
 }

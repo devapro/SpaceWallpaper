@@ -15,7 +15,13 @@ class DataController (private val dataRepository: DataRepository, private val ap
             val lastItemTime = dataRepository.getLastItemTime()
             val serverItems = api.loadNewPart(lastItemTime)
             val dbItems = mapper.map(serverItems)
-            dataRepository.saveItems(dbItems)
+
+            for (item in dbItems){
+                val localItem = dataRepository.getByFireId(item.fireId!!)
+                if(localItem == null) {
+                    dataRepository.saveItem(item)
+                }
+            }
         }
     }
 }

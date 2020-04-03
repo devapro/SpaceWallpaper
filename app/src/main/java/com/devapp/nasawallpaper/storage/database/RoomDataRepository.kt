@@ -5,6 +5,7 @@ import androidx.room.InvalidationTracker
 import com.devapp.nasawallpaper.storage.database.models.DbEntityImage
 
 class RoomDataRepository(private val appDataBase: AppDataBase) : DataRepository{
+
     override fun updateLocalPath(id: Int, path: String?): Int {
         return appDataBase.dataDao().updateLocalPath(id, path)
     }
@@ -19,6 +20,10 @@ class RoomDataRepository(private val appDataBase: AppDataBase) : DataRepository{
 
     override fun saveItems(items: List<DbEntityImage>) {
         appDataBase.dataDao().insert(items)
+    }
+
+    override fun saveItem(item: DbEntityImage) {
+        appDataBase.dataDao().insert(item)
     }
 
     override fun getLastUpdateTime(): Long? {
@@ -57,6 +62,9 @@ class RoomDataRepository(private val appDataBase: AppDataBase) : DataRepository{
          appDataBase.dataDao().setDeleted(id)
     }
 
+    override fun getByFireId(fireId: String): DbEntityImage? {
+        return appDataBase.dataDao().getWallpaperByFireId(fireId)
+    }
 
     @SuppressLint("RestrictedApi")
     override fun addWeakObserver(observer: InvalidationTracker.Observer) {
