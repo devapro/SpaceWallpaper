@@ -12,7 +12,8 @@ interface DataRepository {
     fun getImagesInitial(sinceDate: Long, limit: Int): List<DbEntityImage>
     fun getImagesBeforeDate(sinceDate: Long, limit: Int): List<DbEntityImage>
     fun getImagesAfterDate(sinceDate: Long, limit: Int): List<DbEntityImage>
-    fun getAllItems(limit: Int, minRate: Int): List<DbEntityImage>
+    fun getAllItemsForWallpaper(limit: Int, minRate: Int): List<DbEntityImage>
+    fun getItemsForDownloading(): List<DbEntityImage>
     fun updateLocalPath(id: Int, path: String?): Int
     fun getImageInfoById(id: Int): DbEntityImage?
     fun setRate(id: Int, rate: Int): Int

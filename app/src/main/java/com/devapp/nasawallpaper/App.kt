@@ -49,7 +49,7 @@ class App : MultiDexApplication(){
         val dataController = DataController(dataRepository, serverApi)
         downloadController = DownloadImageController(applicationContext, dataRepository, appStorage)
 
-        appController = AppController(dataController)
+        appController = AppController(dataController, dataRepository, downloadController)
 
         sAppComponent = this
     }

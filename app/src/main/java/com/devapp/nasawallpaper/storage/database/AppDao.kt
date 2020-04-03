@@ -36,7 +36,10 @@ interface AppDao {
     fun getNotDownloadWallpaper(): List<DbEntityImage>
 
     @Query("SELECT * FROM wallpaper WHERE localPath <> '' AND localPath IS NOT NULL AND isDeleted = 0 AND rate >= :minRate ORDER BY createdAt DESC LIMIT :limit")
-    fun getNewestItems(limit: Int, minRate: Int): List<DbEntityImage>
+    fun getAllItemsForWallpaper(limit: Int, minRate: Int): List<DbEntityImage>
+
+    @Query("SELECT * FROM wallpaper WHERE (localPath == '' OR localPath IS NULL) AND isDeleted = 0 LIMIT 10")
+    fun getItemsForDownloading(): List<DbEntityImage>
 
     @Query("UPDATE wallpaper SET localPath = :path WHERE _id = :id")
     fun updateLocalPath(id: Int, path: String?): Int

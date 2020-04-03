@@ -2,7 +2,7 @@ Backgrounds for wallpapers are loading through the open API <https://api.nasa.go
 
 Server api: Firebase
 
-Glide, Room, JetPack Navigation, LiveData
+Glide, Room, JetPack Navigation, LiveData, Workers
 
 Wallpaper service, sensors, animation
 

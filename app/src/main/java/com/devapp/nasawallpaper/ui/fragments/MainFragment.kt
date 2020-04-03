@@ -9,9 +9,6 @@ import androidx.paging.PagedList
 import com.devapp.nasawallpaper.*
 import com.devapp.nasawallpaper.logic.entity.EntityImage
 import com.devapp.nasawallpaper.logic.viewmodels.MainViewModel
-import com.devapp.nasawallpaper.ui.MainActivity
-import com.devapp.nasawallpaper.utils.Permission
-import com.devapp.nasawallpaper.utils.UtilPermission
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : NavigationFragment() {
@@ -39,19 +36,6 @@ class MainFragment : NavigationFragment() {
 
         setTitle(getString(R.string.app_name))
 
-        val hasPermission = (activity as MainActivity)
-            .permissionUtils
-            .checkAndRequestPermissions(
-                this,
-                object : UtilPermission.PermissionCallback(Array(1){ Permission.STORAGE_WRITE}){
-                override fun onSuccessGrantedAll() {
-                    init()
-                }
-            })
-        if(hasPermission){
-           init()
-        }
-
         imagesList.actionListener = viewModel.getImageListener()
 
         viewModel.pagedList.observe(
@@ -75,11 +59,4 @@ class MainFragment : NavigationFragment() {
         }
         return super.onOptionsItemSelected(item)
     }
-
-    private fun init(){
-       activity?.run {
-           (application as App).appController.checkUpdates()
-       }
-    }
-
 }
