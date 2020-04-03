@@ -67,6 +67,7 @@ class ImageViewHolder(itemView: View)  : RecyclerView.ViewHolder(itemView) {
         job?.cancel()
         progress.show()
         rate.setRate(0)
+        image.setImageDrawable(ContextCompat.getDrawable(image.context, R.drawable.image_placeholder))
     }
 
     interface ActionListener{

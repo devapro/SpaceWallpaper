@@ -23,7 +23,7 @@ interface AppDao {
     @Query("SELECT * FROM wallpaper ORDER BY _id DESC LIMIT :limit")
     fun getImagesInitial(limit: Int): List<DbEntityImage>
 
-    @Query("SELECT * FROM wallpaper WHERE _id < :sinceDate ORDER BY _id DESC LIMIT :limit")
+    @Query("SELECT * FROM wallpaper WHERE _id <= :sinceDate ORDER BY _id DESC LIMIT :limit")
     fun getImagesInitial(sinceDate: Long, limit: Int): List<DbEntityImage>
 
     @Query("SELECT * FROM wallpaper WHERE _id > :sinceDate ORDER BY _id ASC LIMIT :limit")

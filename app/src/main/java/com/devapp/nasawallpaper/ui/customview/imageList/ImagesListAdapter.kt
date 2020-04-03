@@ -45,7 +45,7 @@ class ImagesListAdapter : PagedListAdapter<EntityImage, ImageViewHolder>(
         if(payloads.isNotEmpty()){
             if (payloads[0] is EntityImage.Changed){
                 when(payloads[0]){
-                    EntityImage.Changed.LOCAL_PATH_UPDATE -> {
+                    EntityImage.Changed.LOCAL_PATH_CHANGE -> {
                         holder.onBindMedia(image, listener)
                     }
                     EntityImage.Changed.RATE_CHANGE -> {

@@ -16,18 +16,18 @@ data class EntityImage(
 ) {
 
     enum class Changed {
-        LOCAL_PATH_UPDATE,
+        LOCAL_PATH_CHANGE,
         RATE_CHANGE,
-        NONE
+        FULL_CHANGE
     }
 
     fun getChanged(item: EntityImage): Changed{
-        if(!localPath.equals(item.localPath)){
-            return Changed.LOCAL_PATH_UPDATE
+        if(localPath != item.localPath){
+            return Changed.LOCAL_PATH_CHANGE
         }
         if(rate != item.rate){
             return Changed.RATE_CHANGE
         }
-        return Changed.NONE
+        return Changed.FULL_CHANGE
     }
 }
