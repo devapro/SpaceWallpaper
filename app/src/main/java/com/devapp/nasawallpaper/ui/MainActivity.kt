@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         WorkManager.getInstance().enqueue(initialWorkRequest)
 
         val todayImageWorkRequest = PeriodicWorkRequest
-            .Builder(LoadTodayImage::class.java, 24L, TimeUnit.HOURS)
+            .Builder(LoadTodayImage::class.java, 12L, TimeUnit.HOURS)
             .setConstraints(constraints)
             .build()
         WorkManager.getInstance().enqueue(todayImageWorkRequest)

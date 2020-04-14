@@ -1,5 +1,6 @@
 package com.devapp.nasawallpaper.logic.controllers
 
+import android.util.Log
 import com.devapp.nasawallpaper.storage.database.DataRepository
 import com.devapp.nasawallpaper.storage.serverapi.ImageMapper
 import com.devapp.nasawallpaper.storage.serverapi.ServerApi
@@ -14,10 +15,13 @@ class DataController (private val dataRepository: DataRepository, private val ap
     private val mapper = ImageMapper()
 
     suspend fun loadPrevious(): Boolean{
+        Log.d("WORK", "loadPrevious")
         return withContext (Dispatchers.IO){
+            val lastItemTime = dataRepository.getLastItemTime() ?: Date().time
+            val date = Date(lastItemTime)
             for (i in 1..5){
-                val lastItemTime = dataRepository.getLastItemTime()
-                val serverItems = api.loadNewPart(lastItemTime)
+                date.date = date.date - 1
+                val serverItems = api.loadNewPart(date.time)
                 saveItems(serverItems)
             }
             return@withContext true
@@ -25,17 +29,16 @@ class DataController (private val dataRepository: DataRepository, private val ap
     }
 
     suspend fun loadToday(): Boolean{
+        Log.d("WORK", "loadToday")
         return withContext (Dispatchers.IO){
             val serverItems = api.loadNewPart(Date().time)
-            if(serverItems.isEmpty()){
-                return@withContext false
-            }
             saveItems(serverItems)
             return@withContext true
         }
     }
 
     suspend fun loadInitial(): Boolean{
+        Log.d("WORK", "loadInitial")
         return withContext (Dispatchers.IO){
             val lastTimeUpdate = dataRepository.getLastItemTime()
             lastTimeUpdate?.let {

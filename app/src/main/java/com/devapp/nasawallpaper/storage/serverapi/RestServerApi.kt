@@ -1,11 +1,11 @@
 package com.devapp.nasawallpaper.storage.serverapi
 
+import android.util.Log
 import com.devapp.nasawallpaper.storage.serverapi.entity.ImageServerApiModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.*
 import org.json.JSONObject
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -16,10 +16,14 @@ class RestServerApi : ServerApi{
     override suspend fun loadNewPart(lastUpdate: Long?): List<ImageServerApiModel> {
         return withContext(Dispatchers.IO){
             val date = Date()
-            lastUpdate?.let { date.time = it }
+            date.hours = date.hours - 3
             date.date = date.date - 1
-            val formatter = SimpleDateFormat("YYYY-MM-dd")
+            lastUpdate?.let { date.time = it }
+            val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
             val url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=${formatter.format(date)}&hd=true"
+
+            Log.d("WORK", url)
+
             val request: Request = Request
                 .Builder()
                 .url(url)
