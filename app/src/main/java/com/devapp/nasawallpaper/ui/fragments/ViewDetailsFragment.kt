@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import com.devapp.nasawallpaper.App
 import com.devapp.nasawallpaper.R
 import com.devapp.nasawallpaper.logic.viewmodels.ViewDetailsViewModel
-import kotlinx.android.synthetic.main.view_details_fragment.*
+import kotlinx.android.synthetic.main.fragment_view_details.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -28,7 +28,7 @@ class ViewDetailsFragment : NavigationFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.view_details_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_view_details, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

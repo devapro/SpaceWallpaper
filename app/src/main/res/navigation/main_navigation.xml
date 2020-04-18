@@ -21,12 +21,12 @@
         android:id="@+id/settingsFragment"
         android:name="com.devapp.nasawallpaper.ui.fragments.SettingsFragment"
         android:label="settings_fragment"
-        tools:layout="@layout/settings_fragment" />
+        tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/viewDetailsFragment"
         android:name="com.devapp.nasawallpaper.ui.fragments.ViewDetailsFragment"
         android:label="view_details_fragment"
-        tools:layout="@layout/view_details_fragment" >
+        tools:layout="@layout/fragment_view_details" >
         <argument
             android:name="imageId"
             app:argType="integer" />

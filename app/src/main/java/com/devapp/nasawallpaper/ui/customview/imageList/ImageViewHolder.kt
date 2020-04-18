@@ -14,7 +14,7 @@ import kotlinx.coroutines.*
 
 class ImageViewHolder(itemView: View)  : RecyclerView.ViewHolder(itemView) {
     companion object{
-        val LAYOUT_ID = R.layout.view_item_image
+        val LAYOUT_ID = R.layout.item_image
     }
     private val container = itemView.findViewById<RelativeLayout>(R.id.container)
     private val image = itemView.findViewById<ImageView>(R.id.image)

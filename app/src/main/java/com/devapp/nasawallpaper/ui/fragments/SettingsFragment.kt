@@ -17,7 +17,7 @@ import com.devapp.nasawallpaper.ui.InfoActivity
 import com.devapp.nasawallpaper.ui.MainActivity
 import com.devapp.nasawallpaper.utils.Permission
 import com.devapp.nasawallpaper.utils.UtilPermission
-import kotlinx.android.synthetic.main.settings_fragment.*
+import kotlinx.android.synthetic.main.fragment_settings.*
 
 class SettingsFragment : NavigationFragment() {
 
@@ -32,7 +32,7 @@ class SettingsFragment : NavigationFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.settings_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
