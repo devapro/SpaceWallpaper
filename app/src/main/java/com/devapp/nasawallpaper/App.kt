@@ -11,6 +11,7 @@ import com.devapp.nasawallpaper.logic.controllers.DataController
 import com.devapp.nasawallpaper.logic.controllers.DownloadImageController
 import com.devapp.nasawallpaper.storage.database.DataRepository
 import com.devapp.nasawallpaper.storage.database.RoomDataRepository
+import com.devapp.nasawallpaper.storage.preferences.SPreferences
 import com.devapp.nasawallpaper.storage.serverapi.FireBaseServerApi
 import com.devapp.nasawallpaper.storage.serverapi.RestServerApi
 import com.devapp.nasawallpaper.utils.UtilSensors
@@ -22,6 +23,7 @@ class App : MultiDexApplication(){
     lateinit var appStorage: AppStorage
     lateinit var appController: AppController
     lateinit var downloadController: DownloadImageController
+    lateinit var sPreferences: SPreferences
 
     companion object{
         private var sAppComponent : App? = null
@@ -50,6 +52,8 @@ class App : MultiDexApplication(){
         downloadController = DownloadImageController(applicationContext, dataRepository, appStorage)
 
         appController = AppController(dataController, dataRepository, downloadController)
+
+        sPreferences = SPreferences(applicationContext)
 
         sAppComponent = this
     }

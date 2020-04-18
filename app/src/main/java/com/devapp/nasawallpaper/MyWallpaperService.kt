@@ -4,12 +4,12 @@ import android.animation.Animator
 import android.animation.ValueAnimator
 import android.graphics.*
 import android.os.Handler
-import android.os.HandlerThread
 import android.os.Looper
 import android.service.wallpaper.WallpaperService
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import com.devapp.nasawallpaper.logic.WallPapersRotator
+import com.devapp.nasawallpaper.storage.preferences.PREF_ANIMATION
 import com.devapp.nasawallpaper.utils.UtilSensors
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -24,23 +24,17 @@ class MyWallpaperService: WallpaperService() {
 
         private val handler = Handler(Looper.getMainLooper())
         private val drawRunner = Runnable { draw(0.00, 0.00) }
-        var width = 0
-        var height = 0
+        private var width = 0
+        private var height = 0
         private var visible = true
         private var va : ValueAnimator? = null
         private var animation = true
-        private var wallPapersRotator: WallPapersRotator
-
-        init {
-            val handlerThread = HandlerThread("MyHandlerThread")
-            handlerThread.start()
-            wallPapersRotator = WallPapersRotator((application as App).dataRepository)
-        }
+        private var wallPapersRotator: WallPapersRotator = WallPapersRotator((application as App).dataRepository)
 
         override fun onVisibilityChanged(visible: Boolean) {
             this.visible = visible
             if (visible) {
-                animation = applicationContext.getSharedPreferences("WDPP", 0).getBoolean("animation", true)
+                animation = (application as App).sPreferences.getBoolean(PREF_ANIMATION, true)
                 if(wallPapersRotator.currentBitmap != null || isPreview){
                     handler.post(drawRunner)
                 }

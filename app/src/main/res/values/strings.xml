@@ -8,6 +8,8 @@
     <string name="open_settings">Установить</string>
     <string name="open_info">Информация о приложении</string>
     <string name="settings_animation">Анимация при наклоне телефона:</string>
+    <string name="settings_battery_restrict">Не загружать новые картинки при низком заряде батареии</string>
+    <string name="settings_idle_restrict">Не загружать новые картинки когда устройство активно:</string>
     <string name="about_app_title">Информация</string>
     <string name="about_app">Фоны для обоев загружаются через открытое API https://api.nasa.gov.\n\rОбратная связь arseniidev@gmail.com</string>
 </resources>

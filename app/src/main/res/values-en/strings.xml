@@ -10,4 +10,6 @@
     <string name="about_app_title">Information</string>
     <string name="about_app">Backgrounds for wallpapers are loaded through the open API https://api.nasa.gov.\n\rContact us: arseniidev@gmail.com</string>
     <string name="settings">Settings</string>
+    <string name="settings_battery_restrict">Don\'t download when battery level is low</string>
+    <string name="settings_idle_restrict">Don\'t download when device is active</string>
 </resources>

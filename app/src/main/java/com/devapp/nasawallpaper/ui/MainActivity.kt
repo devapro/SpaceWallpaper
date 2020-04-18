@@ -3,7 +3,10 @@ package com.devapp.nasawallpaper.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.work.*
+import com.devapp.nasawallpaper.App
 import com.devapp.nasawallpaper.R
+import com.devapp.nasawallpaper.storage.preferences.PREF_RESTRICT_BATTERY
+import com.devapp.nasawallpaper.storage.preferences.PREF_RESTRICT_IDLE
 import com.devapp.nasawallpaper.storage.serverapi.workers.InitialLoadDataWorkers
 import com.devapp.nasawallpaper.storage.serverapi.workers.LoadTodayImage
 import com.devapp.nasawallpaper.utils.Permission
@@ -41,18 +44,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun scheduleWorkers(){
-        val constraints = Constraints.Builder()
-            .setRequiresBatteryNotLow(true)
-            .setRequiresDeviceIdle(true)
-            .setRequiresStorageNotLow(true)
+        val constraintsForInitialLoader = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
         val initialWorkRequest = OneTimeWorkRequest
             .Builder(InitialLoadDataWorkers::class.java)
-            .setConstraints(constraints)
+            .setConstraints(constraintsForInitialLoader)
             .build()
         WorkManager.getInstance().enqueue(initialWorkRequest)
+
+        val constraints = Constraints.Builder()
+            .setRequiresBatteryNotLow((application as App).sPreferences.getBoolean(PREF_RESTRICT_BATTERY))
+            .setRequiresDeviceIdle((application as App).sPreferences.getBoolean(PREF_RESTRICT_IDLE))
+            .setRequiresStorageNotLow(true)
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
 
         val todayImageWorkRequest = PeriodicWorkRequest
             .Builder(LoadTodayImage::class.java, 12L, TimeUnit.HOURS)

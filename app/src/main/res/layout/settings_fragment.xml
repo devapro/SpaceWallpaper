@@ -29,10 +29,10 @@
         android:layout_marginEnd="16dp"
         android:text="@string/info_for_settings"
         android:visibility="gone"
-        tools:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info" />
+        app:layout_constraintTop_toBottomOf="@+id/info"
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/openSettings"
@@ -41,10 +41,10 @@
         android:layout_marginTop="16dp"
         android:text="@string/open_settings"
         android:visibility="gone"
-        tools:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info2" />
+        app:layout_constraintTop_toBottomOf="@+id/info2"
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/openInfo"
@@ -54,7 +54,7 @@
         android:text="@string/open_info"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/labelAnimation" />
+        app:layout_constraintTop_toBottomOf="@+id/labelIdleRestrict" />
 
     <TextView
         android:id="@+id/labelAnimation"
@@ -63,18 +63,57 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/settings_animation"
-        app:layout_constraintEnd_toStartOf="@+id/animationSwitch"
+        app:layout_constraintEnd_toStartOf="@+id/switchAnimation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/openSettings" />
 
     <Switch
-        android:id="@+id/animationSwitch"
+        android:id="@+id/switchAnimation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/labelAnimation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/labelAnimation" />
+
+    <TextView
+        android:id="@+id/labelBatteryRestrict"
+        android:layout_width="341dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/settings_battery_restrict"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchAnimation" />
+
+    <Switch
+        android:id="@+id/switchBatteryRestrict"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/labelBatteryRestrict"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/labelBatteryRestrict" />
+
+    <TextView
+        android:id="@+id/labelIdleRestrict"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/settings_idle_restrict"
+        app:layout_constraintEnd_toStartOf="@+id/switchIdleRestrict"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchBatteryRestrict" />
+
+    <Switch
+        android:id="@+id/switchIdleRestrict"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/labelIdleRestrict"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/labelIdleRestrict" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

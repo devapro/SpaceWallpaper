@@ -10,6 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.devapp.nasawallpaper.*
 import com.devapp.nasawallpaper.logic.viewmodels.SettingsViewModel
+import com.devapp.nasawallpaper.storage.preferences.PREF_ANIMATION
+import com.devapp.nasawallpaper.storage.preferences.PREF_RESTRICT_BATTERY
+import com.devapp.nasawallpaper.storage.preferences.PREF_RESTRICT_IDLE
 import com.devapp.nasawallpaper.ui.InfoActivity
 import com.devapp.nasawallpaper.ui.MainActivity
 import com.devapp.nasawallpaper.utils.Permission
@@ -56,9 +59,17 @@ class SettingsFragment : NavigationFragment() {
 
         openInfo?.setOnClickListener { openInfo() }
 
-        val pref = activity?.getSharedPreferences("WDPP", 0)
-        animationSwitch?.isChecked = pref?.getBoolean("animation", true) ?: true
-        animationSwitch?.setOnCheckedChangeListener { buttonView, isChecked -> pref?.edit()?.putBoolean("animation", isChecked)?.apply() }
+        switchAnimation?.isChecked = (activity?.application as App)
+            .sPreferences.getBoolean(PREF_ANIMATION, true)
+        switchAnimation?.setOnCheckedChangeListener { _, isChecked -> (activity?.application as App).sPreferences.setValue(isChecked, PREF_ANIMATION) }
+
+        switchBatteryRestrict?.isChecked = (activity?.application as App)
+            .sPreferences.getBoolean(PREF_RESTRICT_BATTERY, true)
+        switchBatteryRestrict?.setOnCheckedChangeListener { _, isChecked -> (activity?.application as App).sPreferences.setValue(isChecked, PREF_RESTRICT_BATTERY) }
+
+        switchIdleRestrict?.isChecked =(activity?.application as App)
+            .sPreferences.getBoolean(PREF_RESTRICT_IDLE, true)
+        switchIdleRestrict?.setOnCheckedChangeListener { _, isChecked -> (activity?.application as App).sPreferences.setValue(isChecked, PREF_RESTRICT_IDLE) }
     }
 
     private fun init(){
