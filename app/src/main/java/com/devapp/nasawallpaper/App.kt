@@ -12,10 +12,8 @@ import com.devapp.nasawallpaper.logic.controllers.DownloadImageController
 import com.devapp.nasawallpaper.storage.database.DataRepository
 import com.devapp.nasawallpaper.storage.database.RoomDataRepository
 import com.devapp.nasawallpaper.storage.preferences.SPreferences
-import com.devapp.nasawallpaper.storage.serverapi.FireBaseServerApi
 import com.devapp.nasawallpaper.storage.serverapi.RestServerApi
 import com.devapp.nasawallpaper.utils.UtilSensors
-import com.google.firebase.firestore.FirebaseFirestore
 
 class App : MultiDexApplication(){
     lateinit var dataBase: AppDataBase
