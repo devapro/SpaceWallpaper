@@ -11,7 +11,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
 import com.devapp.nasawallpaper.*
 import com.devapp.nasawallpaper.logic.entity.EntityImage
+import com.devapp.nasawallpaper.logic.usecases.GetImageUseCase
+import com.devapp.nasawallpaper.logic.usecases.SetRateUseCase
 import com.devapp.nasawallpaper.logic.viewmodels.MainViewModel
+import com.devapp.nasawallpaper.utils.imageLoader.GlideDrawableLoader
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : NavigationFragment() {
@@ -35,7 +38,10 @@ class MainFragment : NavigationFragment() {
         val nav = findNavController()
         val app = (requireActivity().application as App)
 
-        viewModel = ViewModelProviders.of(this, MainViewModel.createFactory(app, app.downloadController, app.dataRepository, nav)).get(MainViewModel::class.java)
+        val loader = GlideDrawableLoader(app.applicationContext)
+        val getImageUseCase = GetImageUseCase(app.dataRepository, app.downloadController, loader)
+        val setRateUseCase = SetRateUseCase(app.dataRepository)
+        viewModel = ViewModelProviders.of(this, MainViewModel.createFactory(app, getImageUseCase, setRateUseCase, app.dataRepository, nav)).get(MainViewModel::class.java)
 
         setTitle(getString(R.string.app_name))
 

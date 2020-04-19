@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.devapp.nasawallpaper.logic.controllers.DownloadImageController
 import com.devapp.nasawallpaper.logic.entity.EntityImage
 import com.devapp.nasawallpaper.logic.livedata.images.ImagesDataSourceFactory
 import com.devapp.nasawallpaper.logic.usecases.GetImageUseCase
@@ -16,14 +15,14 @@ import com.devapp.nasawallpaper.logic.usecases.SetRateUseCase
 import com.devapp.nasawallpaper.storage.database.DataRepository
 import com.devapp.nasawallpaper.ui.customview.imageList.ImageList
 import com.devapp.nasawallpaper.ui.fragments.MainFragmentDirections
-import com.devapp.nasawallpaper.utils.imageLoader.GlideDrawableLoader
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val app: Application,
-    private val downloadController: DownloadImageController,
-    private val dataRepository: DataRepository,
+    app: Application,
+    private val getImageUseCase: GetImageUseCase,
+    private val setRateUseCase: SetRateUseCase,
+    dataRepository: DataRepository,
     private val nav: NavController
 ) : BaseViewModel(app) {
     private val config = PagedList.Config.Builder()
@@ -42,23 +41,19 @@ class MainViewModel(
     companion object {
         fun createFactory(
             application: Application,
-            downloadController: DownloadImageController,
+            getImageUseCase: GetImageUseCase,
+            setRateUseCase: SetRateUseCase,
             dataRepository: DataRepository,
             nav: NavController
         ) : ViewModelProvider.Factory {
-            return ViewModelFactory(application, downloadController, dataRepository, nav)
+            return ViewModelFactory(application, getImageUseCase, setRateUseCase, dataRepository, nav)
         }
     }
 
     fun getImageListener() : ImageList.ActionListener {
         return object : ImageList.ActionListener {
             override suspend fun getImage(imageInfo: EntityImage): Drawable? {
-                val loader =
-                    GlideDrawableLoader(
-                        app.applicationContext
-                    )
-                val useCase = GetImageUseCase(imageInfo, dataRepository, downloadController, loader)
-                return useCase.run()
+                return getImageUseCase.setEntityImage(imageInfo).run()
             }
 
             override fun onImageClick(item: EntityImage) {
@@ -68,13 +63,13 @@ class MainViewModel(
 
             override fun onClickUp(item: EntityImage) {
                 GlobalScope.launch {
-                    SetRateUseCase(dataRepository, item.id, 1).run()
+                    setRateUseCase.setId(item.id).setRate(1).run()
                 }
             }
 
             override fun onClickDown(item: EntityImage) {
                 GlobalScope.launch {
-                    SetRateUseCase(dataRepository, item.id, -1).run()
+                    setRateUseCase.setId(item.id).setRate(-1).run()
                 }
             }
         }
@@ -83,12 +78,13 @@ class MainViewModel(
     @Suppress("UNCHECKED_CAST")
     class ViewModelFactory(
         private val application: Application,
-        private val downloadController: DownloadImageController,
+        private val  getImageUseCase: GetImageUseCase,
+        private val  setRateUseCase: SetRateUseCase,
         private val dataRepository: DataRepository,
         private val nav: NavController
     ): ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            val viewModel = MainViewModel(application, downloadController, dataRepository, nav)
+            val viewModel = MainViewModel(application, getImageUseCase, setRateUseCase, dataRepository, nav)
             return viewModel as T
         }
     }

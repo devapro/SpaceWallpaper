@@ -10,22 +10,32 @@ import com.devapp.nasawallpaper.utils.imageLoader.GlideDrawableLoader
 import java.io.File
 
 class GetImageUseCase(
-    private val entityImage: EntityImage,
     private val dataRepository: DataRepository,
     private val downloadController: DownloadImageController,
     private val glideLoader: GlideDrawableLoader
 ) : BaseUseCase<Drawable?>() {
+
+    private var entityImage: EntityImage? = null
+
+    fun setEntityImage(entityImage: EntityImage): GetImageUseCase {
+        this.entityImage = entityImage
+        return this
+    }
+
     override suspend fun run(): Drawable? {
-        if(TextUtils.isEmpty(entityImage.localPath)){
-            downloadController.downloadImage(entityImage)
-            return null
+        entityImage?.apply {
+            if(TextUtils.isEmpty(this.localPath)){
+                downloadController.downloadImage(this)
+                return null
+            }
+            val f = File(this.localPath)
+            if (!f.exists()){
+                downloadController.downloadImage(this)
+                dataRepository.updateLocalPath(this.id, null)
+                return null
+            }
+            return glideLoader.load(Uri.fromFile(f), 1000)
         }
-        val f = File(entityImage.localPath)
-        if (!f.exists()){
-            downloadController.downloadImage(entityImage)
-            dataRepository.updateLocalPath(entityImage.id, null)
-            return null
-        }
-        return glideLoader.load(Uri.fromFile(f), 1000)
+        return null
     }
 }

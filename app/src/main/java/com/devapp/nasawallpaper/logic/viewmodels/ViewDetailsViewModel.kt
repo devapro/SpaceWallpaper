@@ -18,9 +18,9 @@ import kotlinx.coroutines.*
 import java.io.File
 
 class ViewDetailsViewModel(
-    private val app: Application,
+    app: Application,
     private val dataRepository: DataRepository,
-    private val downloadController: DownloadImageController
+    private val getImageUseCase: GetImageUseCase
 ) : BaseViewModel(app) {
 
     var imageId: Int? = null
@@ -39,9 +39,9 @@ class ViewDetailsViewModel(
         fun createFactory(
             application: Application,
             dataRepository: DataRepository,
-            downloadController: DownloadImageController
+            getImageUseCase: GetImageUseCase
         ) : ViewModelProvider.Factory {
-            return ViewModelFactory(application, dataRepository, downloadController)
+            return ViewModelFactory(application, dataRepository, getImageUseCase)
         }
     }
 
@@ -61,9 +61,7 @@ class ViewDetailsViewModel(
     }
 
     private suspend fun getImageDrawable(item: EntityImage): Drawable?{
-        val loader = GlideDrawableLoader(app.applicationContext)
-        val useCase = GetImageUseCase(item, dataRepository, downloadController, loader)
-        return useCase.run()
+        return getImageUseCase.setEntityImage(item).run()
     }
 
     override fun onCleared() {
@@ -72,9 +70,9 @@ class ViewDetailsViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    class ViewModelFactory(private val application: Application, private val dataRepository: DataRepository, private val downloadController: DownloadImageController): ViewModelProvider.NewInstanceFactory() {
+    class ViewModelFactory(private val application: Application, private val dataRepository: DataRepository, private val getImageUseCase: GetImageUseCase): ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            val viewModel = ViewDetailsViewModel(application, dataRepository, downloadController)
+            val viewModel = ViewDetailsViewModel(application, dataRepository, getImageUseCase)
             return viewModel as T
         }
     }
