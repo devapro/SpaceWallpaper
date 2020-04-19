@@ -1,9 +1,8 @@
-package com.devapp.nasawallpaper.logic
+package com.devapp.nasawallpaper.storage.files
 
 import android.content.Context
 import android.os.Environment
 import java.io.File
-import java.util.concurrent.atomic.AtomicBoolean
 
 class AppStorage constructor(private val context: Context) {
     private var externalStorage: File? = null
@@ -25,7 +24,9 @@ class AppStorage constructor(private val context: Context) {
             return null
         }
         if (appDirectory == null) {
-            appDirectory = File(externalStorage, APP_DIRECTORY_NAME)
+            appDirectory = File(externalStorage,
+                APP_DIRECTORY_NAME
+            )
         }
         return appDirectory
     }
@@ -33,7 +34,9 @@ class AppStorage constructor(private val context: Context) {
     fun getImagesDirectory(): File? {
         val appDirectory = getAppDirectory() ?: return null
         if (imagesDirectory == null) {
-            imagesDirectory = File(appDirectory, IMAGES_DIRECTORY_NAME)
+            imagesDirectory = File(appDirectory,
+                IMAGES_DIRECTORY_NAME
+            )
         }
         if (imagesDirectory?.exists() == true) {
             return imagesDirectory

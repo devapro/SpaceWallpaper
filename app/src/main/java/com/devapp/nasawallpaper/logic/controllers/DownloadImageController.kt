@@ -2,7 +2,7 @@ package com.devapp.nasawallpaper.logic.controllers
 
 import android.content.Context
 import android.util.Log
-import com.devapp.nasawallpaper.logic.AppStorage
+import com.devapp.nasawallpaper.storage.files.AppStorage
 import com.devapp.nasawallpaper.logic.entity.EntityImage
 import com.devapp.nasawallpaper.storage.database.DataRepository
 import com.devapp.nasawallpaper.utils.imageLoader.GlideImageLoader

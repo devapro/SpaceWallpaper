@@ -5,7 +5,7 @@ import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 import androidx.room.Room
 import com.devapp.nasawallpaper.storage.database.AppDataBase
-import com.devapp.nasawallpaper.logic.AppStorage
+import com.devapp.nasawallpaper.storage.files.AppStorage
 import com.devapp.nasawallpaper.logic.controllers.AppController
 import com.devapp.nasawallpaper.logic.controllers.DataController
 import com.devapp.nasawallpaper.logic.controllers.DownloadImageController
@@ -41,10 +41,11 @@ class App : MultiDexApplication(){
         dataBase = Room.databaseBuilder(applicationContext,
             AppDataBase::class.java, "mWDevAppW")
             .build()
-        appStorage = AppStorage(applicationContext)
+        appStorage =
+            AppStorage(applicationContext)
         UtilSensors.init(applicationContext)
         dataRepository = RoomDataRepository(dataBase)
-       // val serverApi = FireBaseServerApi(FirebaseFirestore.getInstance())
+
         val serverApi = RestServerApi()
         val dataController = DataController(dataRepository, serverApi)
         downloadController = DownloadImageController(applicationContext, dataRepository, appStorage)

@@ -31,7 +31,9 @@ class ViewDetailsViewModel(
 
     private var downloadImageJob: Job? = null
     private val mapper = ImageMapper()
+
     val imageInfo = MutableLiveData<EntityImage>()
+    val imageDrawable = MutableLiveData<Drawable>()
 
     companion object {
         fun createFactory(
@@ -49,19 +51,17 @@ class ViewDetailsViewModel(
                 imageId?.let {
                     val imageDbEntity = dataRepository.getImageInfoById(imageId)
                     imageDbEntity?.let {
-                        imageInfo.postValue(mapper.map(imageDbEntity))
+                        val entityImage = mapper.map(imageDbEntity)
+                        imageInfo.postValue(entityImage)
+                        imageDrawable.postValue(getImageDrawable(entityImage))
                     }
                 }
             }
         }
     }
 
-    suspend fun getImageDrawable(): Drawable?{
-        val item = imageInfo.value ?: return null
-        val loader =
-            GlideDrawableLoader(
-                app.applicationContext
-            )
+    private suspend fun getImageDrawable(item: EntityImage): Drawable?{
+        val loader = GlideDrawableLoader(app.applicationContext)
         val useCase = GetImageUseCase(item, dataRepository, downloadController, loader)
         return useCase.run()
     }

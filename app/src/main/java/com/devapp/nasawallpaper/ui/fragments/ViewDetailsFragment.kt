@@ -33,8 +33,8 @@ class ViewDetailsFragment : NavigationFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val args = ViewDetailsFragmentArgs.fromBundle(arguments!!)
-        val app = (activity!!.application as App)
+        val args = ViewDetailsFragmentArgs.fromBundle(requireArguments())
+        val app = (requireActivity().application as App)
         viewModel = ViewModelProviders.of(this, ViewDetailsViewModel.createFactory(app, app.dataRepository, app.downloadController)).get(ViewDetailsViewModel::class.java)
         viewModel.imageId = args.imageId
 
@@ -46,16 +46,9 @@ class ViewDetailsFragment : NavigationFragment() {
         viewModel.imageInfo.observe(viewLifecycleOwner, Observer {
             collapsingToolbar.title = it.name
             description.text = it.description
-            GlobalScope.launch {
-                withContext(Dispatchers.IO){
-                    val drawable = viewModel.getImageDrawable()
-                    drawable?.let {
-                        image.post {
-                            image.setImageDrawable(drawable)
-                        }
-                    }
-                }
-            }
+        })
+        viewModel.imageDrawable.observe(viewLifecycleOwner, Observer {
+            image.setImageDrawable(it)
         })
     }
 

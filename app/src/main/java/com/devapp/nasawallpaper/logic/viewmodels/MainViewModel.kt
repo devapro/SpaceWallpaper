@@ -33,8 +33,7 @@ class MainViewModel(
         .setPrefetchDistance(5)
         .build()
 
-    private val factory =
-        ImagesDataSourceFactory(dataRepository)
+    private val factory = ImagesDataSourceFactory(dataRepository)
 
     val pagedList : LiveData<PagedList<EntityImage>> = LivePagedListBuilder<Long, EntityImage>(factory, config)
         .setInitialLoadKey(null)
