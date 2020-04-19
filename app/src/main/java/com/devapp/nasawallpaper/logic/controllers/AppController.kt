@@ -1,5 +1,6 @@
 package com.devapp.nasawallpaper.logic.controllers
 
+import androidx.lifecycle.LiveData
 import com.devapp.nasawallpaper.storage.database.DataRepository
 import com.devapp.nasawallpaper.storage.database.ImageMapper
 
@@ -25,5 +26,9 @@ class AppController (private val dataController: DataController, private val dat
 
     suspend fun loadToday(): Boolean{
         return dataController.loadToday()
+    }
+
+    fun getErrorInfo(): LiveData<String>{
+        return dataController.getErrorInfo()
     }
 }

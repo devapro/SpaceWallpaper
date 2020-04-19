@@ -1,17 +1,18 @@
 package com.devapp.nasawallpaper.storage.serverapi
 
-import android.util.Log
 import com.devapp.nasawallpaper.storage.serverapi.entity.ImageServerApiModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.*
+import org.json.JSONException
 import org.json.JSONObject
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
 class RestServerApi : ServerApi{
 
-    val okHttpClient: OkHttpClient = OkHttpClient()
+    private val okHttpClient: OkHttpClient = OkHttpClient()
 
     override suspend fun loadNewPart(lastUpdate: Long?): List<ImageServerApiModel> {
         return withContext(Dispatchers.IO){
@@ -22,8 +23,6 @@ class RestServerApi : ServerApi{
             val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
             val url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=${formatter.format(date)}&hd=true"
 
-            Log.d("WORK", url)
-
             val request: Request = Request
                 .Builder()
                 .url(url)
@@ -33,10 +32,16 @@ class RestServerApi : ServerApi{
             if(response.isSuccessful){
                 val json = response.body?.string()
                 val jsonObject = JSONObject(json)
+                var hdurl: String? = null
+                try {
+                    hdurl = jsonObject.getString("hdurl")
+                } catch (e: JSONException){
+
+                }
                 val item = ImageServerApiModel(
                     jsonObject.getString("date"),
                     jsonObject.getString("url"),
-                    jsonObject.getString("hdurl"),
+                    hdurl,
                     jsonObject.getString("title"),
                     jsonObject.getString("explanation"),
                     jsonObject.getString("media_type"),
@@ -47,7 +52,7 @@ class RestServerApi : ServerApi{
                 )
                 return@withContext listOf(item)
             }
-            return@withContext Collections.emptyList<ImageServerApiModel>()
+            throw Exception(response.message)
         }
     }
 }

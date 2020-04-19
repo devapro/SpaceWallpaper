@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.devapp.nasawallpaper.App
 import com.devapp.nasawallpaper.R
-import com.devapp.nasawallpaper.storage.serverapi.workers.scheduleWorkers
+import com.devapp.nasawallpaper.storage.workers.scheduleWorkers
 import com.devapp.nasawallpaper.utils.Permission
 import com.devapp.nasawallpaper.utils.UtilPermission
 

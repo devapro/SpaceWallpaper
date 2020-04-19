@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper.storage.serverapi.workers
+package com.devapp.nasawallpaper.storage.workers
 
 import androidx.work.*
 import com.devapp.nasawallpaper.App
@@ -13,7 +13,7 @@ fun scheduleWorkers(app: App){
         .build()
 
     val initialWorkRequest = OneTimeWorkRequest
-        .Builder(InitialLoadDataWorkers::class.java)
+        .Builder(InitialLoadDataWorker::class.java)
         .setConstraints(constraintsForInitialLoader)
         .build()
     WorkManager.getInstance(app).enqueue(initialWorkRequest)
@@ -28,7 +28,7 @@ fun scheduleWorkers(app: App){
         .build()
 
     val todayImageWorkRequest = PeriodicWorkRequest
-        .Builder(LoadTodayImage::class.java, 12L, TimeUnit.HOURS)
+        .Builder(LoadTodayImageWorker::class.java, 12L, TimeUnit.HOURS)
         .setConstraints(constraints)
         .build()
     WorkManager.getInstance(app).enqueue(todayImageWorkRequest)

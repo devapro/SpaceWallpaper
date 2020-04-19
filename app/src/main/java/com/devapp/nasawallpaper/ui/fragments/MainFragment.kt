@@ -3,6 +3,9 @@ package com.devapp.nasawallpaper.ui.fragments
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
@@ -30,7 +33,7 @@ class MainFragment : NavigationFragment() {
         super.onActivityCreated(savedInstanceState)
 
         val nav = findNavController()
-        val app = (activity!!.application as App)
+        val app = (requireActivity().application as App)
 
         viewModel = ViewModelProviders.of(this, MainViewModel.createFactory(app, app.downloadController, app.dataRepository, nav)).get(MainViewModel::class.java)
 
@@ -40,8 +43,20 @@ class MainFragment : NavigationFragment() {
 
         viewModel.pagedList.observe(
             viewLifecycleOwner,
-            Observer<PagedList<EntityImage>> { items -> imagesList.submitList(items) }
+            Observer { items -> run {
+                if(items.size > 0){
+                    emptyListInfo.visibility = GONE
+                }
+                else {
+                    emptyListInfo.visibility = VISIBLE
+                }
+                imagesList.submitList(items)
+            } }
         )
+
+        app.appController.getErrorInfo().observe(viewLifecycleOwner, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

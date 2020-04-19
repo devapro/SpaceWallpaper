@@ -12,4 +12,5 @@
     <string name="settings_idle_restrict">Не загружать новые картинки когда устройство активно:</string>
     <string name="about_app_title">Информация</string>
     <string name="about_app">Фоны для обоев загружаются через открытое API https://api.nasa.gov.\n\rОбратная связь arseniidev@gmail.com</string>
+    <string name="empty_list_info">Для загрузки картинок необходимо разрешить запись файлов</string>
 </resources>
