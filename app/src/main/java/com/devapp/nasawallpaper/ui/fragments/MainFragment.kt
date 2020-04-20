@@ -2,6 +2,7 @@ package com.devapp.nasawallpaper.ui.fragments
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -15,6 +16,8 @@ import com.devapp.nasawallpaper.logic.usecases.GetImageUseCase
 import com.devapp.nasawallpaper.logic.usecases.SetRateUseCase
 import com.devapp.nasawallpaper.logic.viewmodels.MainViewModel
 import com.devapp.nasawallpaper.utils.imageLoader.GlideDrawableLoader
+import com.devapp.nasawallpaper.utils.observe
+import com.devapp.nasawallpaper.utils.observeNonNull
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : NavigationFragment() {
@@ -47,22 +50,21 @@ class MainFragment : NavigationFragment() {
 
         imagesList.actionListener = viewModel.getImageListener()
 
-        viewModel.pagedList.observe(
-            viewLifecycleOwner,
-            Observer { items -> run {
-                if(items.size > 0){
-                    emptyListInfo.visibility = GONE
-                }
-                else {
-                    emptyListInfo.visibility = VISIBLE
-                }
-                imagesList.submitList(items)
-            } }
-        )
+        viewModel.pagedList.observeNonNull(viewLifecycleOwner){
+            if(it.size > 0){
+                emptyListInfo.visibility = GONE
+            }
+            else {
+                emptyListInfo.visibility = VISIBLE
+            }
+            imagesList.submitList(it)
+        }
 
-        app.appController.getErrorInfo().observe(viewLifecycleOwner, Observer {
-            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-        })
+        app.appController.getErrorInfo().observe(viewLifecycleOwner){
+            if(!TextUtils.isEmpty(it)){
+                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

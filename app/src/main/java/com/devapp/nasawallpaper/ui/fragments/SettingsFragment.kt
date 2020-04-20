@@ -15,6 +15,8 @@ import com.devapp.nasawallpaper.ui.InfoActivity
 import com.devapp.nasawallpaper.ui.MainActivity
 import com.devapp.nasawallpaper.utils.Permission
 import com.devapp.nasawallpaper.utils.UtilPermission
+import com.devapp.nasawallpaper.utils.observe
+import com.devapp.nasawallpaper.utils.observeNonNull
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 class SettingsFragment : NavigationFragment() {
@@ -59,9 +61,9 @@ class SettingsFragment : NavigationFragment() {
 
         openInfo?.setOnClickListener { openInfo() }
 
-        viewModel.settingsAnimation.observe(viewLifecycleOwner, Observer { switchAnimation.isChecked = it })
-        viewModel.settingsBatteryRestrict.observe(viewLifecycleOwner, Observer { switchBatteryRestrict.isChecked = it })
-        viewModel.settingsIdleRestrict.observe(viewLifecycleOwner, Observer { switchIdleRestrict.isChecked = it })
+        viewModel.settingsAnimation.observeNonNull(viewLifecycleOwner){ switchAnimation.isChecked = it }
+        viewModel.settingsBatteryRestrict.observeNonNull(viewLifecycleOwner){ switchBatteryRestrict.isChecked = it }
+        viewModel.settingsIdleRestrict.observeNonNull(viewLifecycleOwner){ switchIdleRestrict.isChecked = it }
 
         switchAnimation?.setOnCheckedChangeListener { _, isChecked -> viewModel.setAnimation(isChecked) }
         switchBatteryRestrict?.setOnCheckedChangeListener { _, isChecked -> viewModel.setBatteryRestrict(isChecked) }

@@ -11,11 +11,8 @@ import com.devapp.nasawallpaper.R
 import com.devapp.nasawallpaper.logic.usecases.GetImageUseCase
 import com.devapp.nasawallpaper.logic.viewmodels.ViewDetailsViewModel
 import com.devapp.nasawallpaper.utils.imageLoader.GlideDrawableLoader
+import com.devapp.nasawallpaper.utils.observe
 import kotlinx.android.synthetic.main.fragment_view_details.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ViewDetailsFragment : NavigationFragment() {
 
@@ -47,13 +44,14 @@ class ViewDetailsFragment : NavigationFragment() {
 
         collapsingToolbar.setExpandedTitleTextAppearance(R.style.ExpandedTitleTextAppearance)
 
-        viewModel.imageInfo.observe(viewLifecycleOwner, Observer {
-            collapsingToolbar.title = it.name
-            description.text = it.description
-        })
-        viewModel.imageDrawable.observe(viewLifecycleOwner, Observer {
-            image.setImageDrawable(it)
-        })
+        viewModel.imageInfo.observe(viewLifecycleOwner){
+            it?.let {
+                collapsingToolbar.title = it.name
+                description.text = it.description
+            }
+        }
+
+        viewModel.imageDrawable.observe(viewLifecycleOwner){ image.setImageDrawable(it) }
     }
 
 }
