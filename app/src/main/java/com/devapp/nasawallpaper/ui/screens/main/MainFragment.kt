@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper.ui.fragments
+package com.devapp.nasawallpaper.ui.screens.main
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -7,14 +7,11 @@ import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.paging.PagedList
 import com.devapp.nasawallpaper.*
-import com.devapp.nasawallpaper.logic.entity.EntityImage
 import com.devapp.nasawallpaper.logic.usecases.GetImageUseCase
 import com.devapp.nasawallpaper.logic.usecases.SetRateUseCase
-import com.devapp.nasawallpaper.logic.viewmodels.MainViewModel
+import com.devapp.nasawallpaper.ui.NavigationFragment
 import com.devapp.nasawallpaper.utils.imageLoader.GlideDrawableLoader
 import com.devapp.nasawallpaper.utils.observe
 import com.devapp.nasawallpaper.utils.observeNonNull
@@ -23,7 +20,8 @@ import kotlinx.android.synthetic.main.fragment_main.*
 class MainFragment : NavigationFragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() =
+            MainFragment()
     }
 
     private lateinit var viewModel: MainViewModel
@@ -44,7 +42,8 @@ class MainFragment : NavigationFragment() {
         val loader = GlideDrawableLoader(app.applicationContext)
         val getImageUseCase = GetImageUseCase(app.dataRepository, app.downloadController, loader)
         val setRateUseCase = SetRateUseCase(app.dataRepository)
-        viewModel = ViewModelProviders.of(this, MainViewModel.createFactory(app, getImageUseCase, setRateUseCase, app.dataRepository, nav)).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, MainViewModel.createFactory(app, getImageUseCase, setRateUseCase, app.dataRepository, nav)).get(
+            MainViewModel::class.java)
 
         setTitle(getString(R.string.app_name))
 

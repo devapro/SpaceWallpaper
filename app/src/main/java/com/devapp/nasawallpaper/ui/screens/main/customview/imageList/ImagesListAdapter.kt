@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper.ui.customview.imageList
+package com.devapp.nasawallpaper.ui.screens.main.customview.imageList
 
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater

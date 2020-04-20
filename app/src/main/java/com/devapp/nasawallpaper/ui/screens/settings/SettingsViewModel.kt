@@ -1,9 +1,10 @@
-package com.devapp.nasawallpaper.logic.viewmodels
+package com.devapp.nasawallpaper.ui.screens.settings
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.devapp.nasawallpaper.logic.BaseViewModel
 import com.devapp.nasawallpaper.storage.preferences.PREF_ANIMATION
 import com.devapp.nasawallpaper.storage.preferences.PREF_RESTRICT_BATTERY
 import com.devapp.nasawallpaper.storage.preferences.PREF_RESTRICT_IDLE
@@ -23,7 +24,10 @@ class SettingsViewModel(
             application: Application,
             sPreferences: SPreferences
         ) : ViewModelProvider.Factory {
-            return ViewModelFactory(application, sPreferences)
+            return ViewModelFactory(
+                application,
+                sPreferences
+            )
         }
     }
 
@@ -51,7 +55,11 @@ class SettingsViewModel(
     @Suppress("UNCHECKED_CAST")
     class ViewModelFactory(private val application: Application, private val sPreferences: SPreferences): ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            val viewModel = SettingsViewModel(application, sPreferences)
+            val viewModel =
+                SettingsViewModel(
+                    application,
+                    sPreferences
+                )
             return viewModel as T
         }
     }

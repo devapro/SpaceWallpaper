@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper.ui.customview
+package com.devapp.nasawallpaper.ui.screens.main.customview
 
 import android.content.Context
 import android.graphics.Color

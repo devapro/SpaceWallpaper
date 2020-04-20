@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper.logic.viewmodels
+package com.devapp.nasawallpaper.logic
 
 import android.app.Application
 import androidx.annotation.StringRes

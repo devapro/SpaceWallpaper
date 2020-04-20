@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper.ui.customview.imageList
+package com.devapp.nasawallpaper.ui.screens.main.customview.imageList
 
 import android.graphics.drawable.Drawable
 import android.view.View
@@ -9,7 +9,7 @@ import androidx.core.widget.ContentLoadingProgressBar
 import androidx.recyclerview.widget.RecyclerView
 import com.devapp.nasawallpaper.R
 import com.devapp.nasawallpaper.logic.entity.EntityImage
-import com.devapp.nasawallpaper.ui.customview.RateBlock
+import com.devapp.nasawallpaper.ui.screens.main.customview.RateBlock
 import kotlinx.coroutines.*
 
 class ImageViewHolder(itemView: View)  : RecyclerView.ViewHolder(itemView) {

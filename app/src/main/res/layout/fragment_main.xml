@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.MainFragment">
+    tools:context=".ui.screens.main.MainFragment">
 
     <include
         layout="@layout/view_toolbar" />
 
-    <com.devapp.nasawallpaper.ui.customview.imageList.ImageList
+    <com.devapp.nasawallpaper.ui.screens.main.customview.imageList.ImageList
         android:id="@+id/imagesList"
         android:layout_width="match_parent"
         android:layout_height="0dp"

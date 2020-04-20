@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper.ui.fragments
+package com.devapp.nasawallpaper.ui.screens.settings
 
 import android.app.WallpaperManager
 import android.content.ComponentName
@@ -8,14 +8,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import com.devapp.nasawallpaper.*
-import com.devapp.nasawallpaper.logic.viewmodels.SettingsViewModel
 import com.devapp.nasawallpaper.ui.InfoActivity
 import com.devapp.nasawallpaper.ui.MainActivity
+import com.devapp.nasawallpaper.ui.NavigationFragment
 import com.devapp.nasawallpaper.utils.Permission
 import com.devapp.nasawallpaper.utils.UtilPermission
-import com.devapp.nasawallpaper.utils.observe
 import com.devapp.nasawallpaper.utils.observeNonNull
 import kotlinx.android.synthetic.main.fragment_settings.*
 
@@ -39,7 +37,8 @@ class SettingsFragment : NavigationFragment() {
         super.onActivityCreated(savedInstanceState)
 
         val app = (requireActivity().application as App)
-        viewModel = ViewModelProviders.of(this, SettingsViewModel.createFactory(app, app.sPreferences)).get(SettingsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, SettingsViewModel.createFactory(app, app.sPreferences)).get(
+            SettingsViewModel::class.java)
 
         setTitle(getString(R.string.settings))
         displayHome()

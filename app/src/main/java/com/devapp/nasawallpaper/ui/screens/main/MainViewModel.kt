@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper.logic.viewmodels
+package com.devapp.nasawallpaper.ui.screens.main
 
 import android.app.Application
 import android.graphics.drawable.Drawable
@@ -12,9 +12,9 @@ import com.devapp.nasawallpaper.logic.entity.EntityImage
 import com.devapp.nasawallpaper.logic.livedata.images.ImagesDataSourceFactory
 import com.devapp.nasawallpaper.logic.usecases.GetImageUseCase
 import com.devapp.nasawallpaper.logic.usecases.SetRateUseCase
+import com.devapp.nasawallpaper.logic.BaseViewModel
 import com.devapp.nasawallpaper.storage.database.DataRepository
-import com.devapp.nasawallpaper.ui.customview.imageList.ImageList
-import com.devapp.nasawallpaper.ui.fragments.MainFragmentDirections
+import com.devapp.nasawallpaper.ui.screens.main.customview.imageList.ImageList
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -46,7 +46,13 @@ class MainViewModel(
             dataRepository: DataRepository,
             nav: NavController
         ) : ViewModelProvider.Factory {
-            return ViewModelFactory(application, getImageUseCase, setRateUseCase, dataRepository, nav)
+            return ViewModelFactory(
+                application,
+                getImageUseCase,
+                setRateUseCase,
+                dataRepository,
+                nav
+            )
         }
     }
 
@@ -84,7 +90,14 @@ class MainViewModel(
         private val nav: NavController
     ): ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            val viewModel = MainViewModel(application, getImageUseCase, setRateUseCase, dataRepository, nav)
+            val viewModel =
+                MainViewModel(
+                    application,
+                    getImageUseCase,
+                    setRateUseCase,
+                    dataRepository,
+                    nav
+                )
             return viewModel as T
         }
     }

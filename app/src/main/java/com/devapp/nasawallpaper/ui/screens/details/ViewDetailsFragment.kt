@@ -1,15 +1,14 @@
-package com.devapp.nasawallpaper.ui.fragments
+package com.devapp.nasawallpaper.ui.screens.details
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import com.devapp.nasawallpaper.App
 import com.devapp.nasawallpaper.R
 import com.devapp.nasawallpaper.logic.usecases.GetImageUseCase
-import com.devapp.nasawallpaper.logic.viewmodels.ViewDetailsViewModel
+import com.devapp.nasawallpaper.ui.NavigationFragment
 import com.devapp.nasawallpaper.utils.imageLoader.GlideDrawableLoader
 import com.devapp.nasawallpaper.utils.observe
 import kotlinx.android.synthetic.main.fragment_view_details.*
@@ -32,11 +31,15 @@ class ViewDetailsFragment : NavigationFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val args = ViewDetailsFragmentArgs.fromBundle(requireArguments())
+        val args =
+            ViewDetailsFragmentArgs.fromBundle(
+                requireArguments()
+            )
         val app = (requireActivity().application as App)
         val loader = GlideDrawableLoader(app.applicationContext)
         val useCase = GetImageUseCase(app.dataRepository, app.downloadController, loader)
-        viewModel = ViewModelProviders.of(this, ViewDetailsViewModel.createFactory(app, app.dataRepository, useCase)).get(ViewDetailsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, ViewDetailsViewModel.createFactory(app, app.dataRepository, useCase)).get(
+            ViewDetailsViewModel::class.java)
         viewModel.imageId = args.imageId
 
         displayHome()

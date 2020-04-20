@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper.ui.fragments
+package com.devapp.nasawallpaper.ui
 
 import android.os.Bundle
 import android.view.MenuItem

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.devapp.nasawallpaper.ui.fragments.MainFragment"
+        android:name="com.devapp.nasawallpaper.ui.screens.main.MainFragment"
         android:label="main_fragment"
         tools:layout="@layout/fragment_main" >
         <action
@@ -19,12 +19,12 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.devapp.nasawallpaper.ui.fragments.SettingsFragment"
+        android:name="com.devapp.nasawallpaper.ui.screens.settings.SettingsFragment"
         android:label="settings_fragment"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/viewDetailsFragment"
-        android:name="com.devapp.nasawallpaper.ui.fragments.ViewDetailsFragment"
+        android:name="com.devapp.nasawallpaper.ui.screens.details.ViewDetailsFragment"
         android:label="view_details_fragment"
         tools:layout="@layout/fragment_view_details" >
         <argument
