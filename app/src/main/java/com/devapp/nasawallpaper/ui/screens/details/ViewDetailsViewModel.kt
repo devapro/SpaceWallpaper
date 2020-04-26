@@ -30,20 +30,6 @@ class ViewDetailsViewModel(
     val imageInfo = MutableLiveData<EntityImage>()
     val imageDrawable = MutableLiveData<Drawable>()
 
-    companion object {
-        fun createFactory(
-            application: Application,
-            dataRepository: DataRepository,
-            getImageUseCase: GetImageUseCase
-        ) : ViewModelProvider.Factory {
-            return ViewModelFactory(
-                application,
-                dataRepository,
-                getImageUseCase
-            )
-        }
-    }
-
     private fun getImageInfo(imageId: Int?){
         GlobalScope.launch {
             withContext(Dispatchers.IO){

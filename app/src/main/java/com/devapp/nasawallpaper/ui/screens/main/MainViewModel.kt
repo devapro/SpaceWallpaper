@@ -38,24 +38,6 @@ class MainViewModel(
         .setInitialLoadKey(null)
         .build()
 
-    companion object {
-        fun createFactory(
-            application: Application,
-            getImageUseCase: GetImageUseCase,
-            setRateUseCase: SetRateUseCase,
-            dataRepository: DataRepository,
-            nav: NavController
-        ) : ViewModelProvider.Factory {
-            return ViewModelFactory(
-                application,
-                getImageUseCase,
-                setRateUseCase,
-                dataRepository,
-                nav
-            )
-        }
-    }
-
     fun getImageListener() : ImageList.ActionListener {
         return object : ImageList.ActionListener {
             override suspend fun getImage(imageInfo: EntityImage): Drawable? {

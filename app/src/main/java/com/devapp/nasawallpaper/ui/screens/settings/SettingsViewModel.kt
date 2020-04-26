@@ -19,18 +19,6 @@ class SettingsViewModel(
     val settingsBatteryRestrict = MutableLiveData<Boolean>()
     val settingsIdleRestrict = MutableLiveData<Boolean>()
 
-    companion object {
-        fun createFactory(
-            application: Application,
-            sPreferences: SPreferences
-        ) : ViewModelProvider.Factory {
-            return ViewModelFactory(
-                application,
-                sPreferences
-            )
-        }
-    }
-
     init {
         settingsAnimation.postValue(sPreferences.getBoolean(PREF_ANIMATION, true))
         settingsBatteryRestrict.postValue(sPreferences.getBoolean(PREF_RESTRICT_BATTERY, true))

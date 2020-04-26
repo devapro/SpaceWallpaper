@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.devapp.nasawallpaper.*
 import com.devapp.nasawallpaper.ui.InfoActivity
 import com.devapp.nasawallpaper.ui.MainActivity
@@ -19,12 +20,10 @@ import kotlinx.android.synthetic.main.fragment_settings.*
 
 class SettingsFragment : NavigationFragment() {
 
-    companion object {
-        fun newInstance() =
-            SettingsFragment()
+    private val viewModel by viewModels<SettingsViewModel>(){
+        val app = (requireActivity().application as App)
+        SettingsViewModel.ViewModelFactory(app, app.sPreferences)
     }
-
-    private lateinit var viewModel: SettingsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,11 +34,6 @@ class SettingsFragment : NavigationFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        val app = (requireActivity().application as App)
-        viewModel = ViewModelProviders.of(this, SettingsViewModel.createFactory(app, app.sPreferences)).get(
-            SettingsViewModel::class.java)
-
         setTitle(getString(R.string.settings))
         displayHome()
 

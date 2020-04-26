@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.devapp.nasawallpaper.App
 import com.devapp.nasawallpaper.R
 import com.devapp.nasawallpaper.logic.usecases.GetImageUseCase
@@ -15,12 +16,12 @@ import kotlinx.android.synthetic.main.fragment_view_details.*
 
 class ViewDetailsFragment : NavigationFragment() {
 
-    companion object {
-        fun newInstance() =
-            ViewDetailsFragment()
+    private val viewModel by viewModels<ViewDetailsViewModel>(){
+        val app = (requireActivity().application as App)
+        val loader = GlideDrawableLoader(app.applicationContext)
+        val useCase = GetImageUseCase(app.dataRepository, app.downloadController, loader)
+        ViewDetailsViewModel.ViewModelFactory(app, app.dataRepository, useCase)
     }
-
-    private lateinit var viewModel: ViewDetailsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,11 +36,6 @@ class ViewDetailsFragment : NavigationFragment() {
             ViewDetailsFragmentArgs.fromBundle(
                 requireArguments()
             )
-        val app = (requireActivity().application as App)
-        val loader = GlideDrawableLoader(app.applicationContext)
-        val useCase = GetImageUseCase(app.dataRepository, app.downloadController, loader)
-        viewModel = ViewModelProviders.of(this, ViewDetailsViewModel.createFactory(app, app.dataRepository, useCase)).get(
-            ViewDetailsViewModel::class.java)
         viewModel.imageId = args.imageId
 
         displayHome()

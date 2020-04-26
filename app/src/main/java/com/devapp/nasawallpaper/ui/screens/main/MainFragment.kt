@@ -7,6 +7,7 @@ import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.devapp.nasawallpaper.*
 import com.devapp.nasawallpaper.logic.usecases.GetImageUseCase
@@ -24,7 +25,14 @@ class MainFragment : NavigationFragment() {
             MainFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel by viewModels<MainViewModel>(){
+        val nav = findNavController()
+        val app = (requireActivity().application as App)
+        val loader = GlideDrawableLoader(app.applicationContext)
+        val getImageUseCase = GetImageUseCase(app.dataRepository, app.downloadController, loader)
+        val setRateUseCase = SetRateUseCase(app.dataRepository)
+        MainViewModel.ViewModelFactory(app, getImageUseCase, setRateUseCase, app.dataRepository, nav)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,15 +43,6 @@ class MainFragment : NavigationFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        val nav = findNavController()
-        val app = (requireActivity().application as App)
-
-        val loader = GlideDrawableLoader(app.applicationContext)
-        val getImageUseCase = GetImageUseCase(app.dataRepository, app.downloadController, loader)
-        val setRateUseCase = SetRateUseCase(app.dataRepository)
-        viewModel = ViewModelProviders.of(this, MainViewModel.createFactory(app, getImageUseCase, setRateUseCase, app.dataRepository, nav)).get(
-            MainViewModel::class.java)
 
         setTitle(getString(R.string.app_name))
 
@@ -59,6 +58,7 @@ class MainFragment : NavigationFragment() {
             imagesList.submitList(it)
         }
 
+        val app = (requireActivity().application as App)
         app.appController.getErrorInfo().observe(viewLifecycleOwner){
             if(!TextUtils.isEmpty(it)){
                 Toast.makeText(context, it, Toast.LENGTH_LONG).show()
