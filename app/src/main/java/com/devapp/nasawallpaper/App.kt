@@ -24,11 +24,11 @@ class App : MultiDexApplication(){
     lateinit var sPreferences: SPreferences
 
     companion object{
-        private var sAppComponent : App? = null
+        private var INSTANCE : App? = null
 
         @JvmStatic
         fun getAppComponent() : App {
-            return sAppComponent!!
+            return INSTANCE!!
         }
     }
     override fun attachBaseContext(base: Context) {
@@ -54,6 +54,6 @@ class App : MultiDexApplication(){
 
         sPreferences = SPreferences(applicationContext)
 
-        sAppComponent = this
+        INSTANCE = this
     }
 }

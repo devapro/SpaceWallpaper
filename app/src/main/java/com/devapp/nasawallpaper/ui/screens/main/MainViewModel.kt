@@ -9,7 +9,7 @@ import androidx.navigation.NavController
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.devapp.nasawallpaper.logic.entity.EntityImage
-import com.devapp.nasawallpaper.logic.livedata.images.ImagesDataSourceFactory
+import com.devapp.nasawallpaper.storage.database.livedata.ImagesDataSourceFactory
 import com.devapp.nasawallpaper.logic.usecases.GetImageUseCase
 import com.devapp.nasawallpaper.logic.usecases.SetRateUseCase
 import com.devapp.nasawallpaper.logic.BaseViewModel

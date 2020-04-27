@@ -1,7 +1,6 @@
-package com.devapp.nasawallpaper.logic.livedata.images
+package com.devapp.nasawallpaper.storage.database.livedata
 
 import androidx.paging.DataSource
-import com.devapp.nasawallpaper.storage.database.AppDataBase
 import com.devapp.nasawallpaper.logic.entity.EntityImage
 import com.devapp.nasawallpaper.storage.database.DataRepository
 
