@@ -58,6 +58,10 @@ class MainFragment : NavigationFragment() {
             imagesList.submitList(it)
         }
 
+        viewModel.loadingStateLiveData.observe(viewLifecycleOwner){
+            loader.visibility = if(it == true) VISIBLE else GONE
+        }
+
         val app = (requireActivity().application as App)
         app.appController.getErrorInfo().observe(viewLifecycleOwner){
             if(!TextUtils.isEmpty(it)){

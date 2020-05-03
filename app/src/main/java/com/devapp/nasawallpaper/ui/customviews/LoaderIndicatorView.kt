@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper.ui.customview
+package com.devapp.nasawallpaper.ui.customviews
 
 import android.animation.TimeAnimator
 import android.content.Context
@@ -72,7 +72,7 @@ class LoaderIndicatorView @JvmOverloads constructor(
         }
         paint.isAntiAlias = true
 
-        val animatable = setMode(mode)
+        val animatable = setMode(Mode.getModeByInt(mode))
 
         animator.setTimeListener { anim, totalTime, deltaTime -> run {
             animatable.animate(totalTime.toInt())
@@ -80,9 +80,9 @@ class LoaderIndicatorView @JvmOverloads constructor(
         } }
     }
 
-    fun setMode(mode: Int): Animatable{
+    fun setMode(mode: Mode): Animatable{
         when(mode){
-            2 -> {
+            Mode.ROTATE -> {
                 animationRadius = (spaceBetweenCenters / cos(30 * Math.PI / 180)).toInt()
                 animationWidth = (animationRadius + circleMaxRadius) * 2 + 2;
                 animationHeight = animationWidth
@@ -95,10 +95,9 @@ class LoaderIndicatorView @JvmOverloads constructor(
 
         }
         return when(mode){
-            0 -> createSimpleAnimatable()
-            1 -> createAlphaAnimatable()
-            2 -> createFullAnimatable()
-            else -> createSimpleAnimatable()
+            Mode.SCALE -> createSimpleAnimatable()
+            Mode.ALPHA -> createAlphaAnimatable()
+            Mode.ROTATE -> createFullAnimatable()
         }
     }
 
@@ -397,4 +396,21 @@ class LoaderIndicatorView @JvmOverloads constructor(
     }
 
     class Circle (val position: Point, var index: Int, var scale: Float, var color: Int)
+
+    enum class Mode(mode: Int){
+        SCALE(0),
+        ALPHA(1),
+        ROTATE(2);
+
+        companion object {
+            fun getModeByInt(mode: Int): Mode{
+                return when(mode){
+                    1 -> ALPHA
+                    2 -> ROTATE
+                    else -> SCALE
+                }
+            }
+        }
+
+    }
 }

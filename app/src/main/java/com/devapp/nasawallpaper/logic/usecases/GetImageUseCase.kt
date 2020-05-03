@@ -23,15 +23,15 @@ class GetImageUseCase(
     }
 
     override suspend fun run(): Drawable? {
-        entityImage?.apply {
-            if(TextUtils.isEmpty(this.localPath)){
-                downloadController.downloadImage(this)
+        entityImage?.let {
+            if(TextUtils.isEmpty(it.localPath)){
+                downloadController.downloadImage(it)
                 return null
             }
-            val f = File(this.localPath)
+            val f = File(it.localPath)
             if (!f.exists()){
-                downloadController.downloadImage(this)
-                dataRepository.updateLocalPath(this.id, null)
+                downloadController.downloadImage(it)
+                dataRepository.updateLocalPath(it.id, null)
                 return null
             }
             return glideLoader.load(Uri.fromFile(f), 1000)

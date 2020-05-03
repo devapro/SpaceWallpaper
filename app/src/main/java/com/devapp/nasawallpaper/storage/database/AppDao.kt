@@ -20,16 +20,16 @@ interface AppDao {
     @Query("SELECT * FROM wallpaper")
     fun getAllWallpapers(): List<DbEntityImage>
     /////
-    @Query("SELECT * FROM wallpaper ORDER BY _id DESC LIMIT :limit")
+    @Query("SELECT * FROM wallpaper WHERE localPath IS NOT NULL AND isDeleted = 0 ORDER BY _id DESC LIMIT :limit")
     fun getImagesInitial(limit: Int): List<DbEntityImage>
 
-    @Query("SELECT * FROM wallpaper WHERE _id <= :sinceDate ORDER BY _id DESC LIMIT :limit")
+    @Query("SELECT * FROM wallpaper WHERE _id <= :sinceDate AND localPath IS NOT NULL AND isDeleted = 0 ORDER BY _id DESC LIMIT :limit")
     fun getImagesInitial(sinceDate: Long, limit: Int): List<DbEntityImage>
 
-    @Query("SELECT * FROM wallpaper WHERE _id > :sinceDate ORDER BY _id ASC LIMIT :limit")
+    @Query("SELECT * FROM wallpaper WHERE _id > :sinceDate AND localPath IS NOT NULL AND isDeleted = 0 ORDER BY _id ASC LIMIT :limit")
     fun getImagesBeforeDate(sinceDate: Long, limit: Int): List<DbEntityImage>
 
-    @Query("SELECT * FROM wallpaper WHERE _id < :sinceDate ORDER BY _id DESC LIMIT :limit")
+    @Query("SELECT * FROM wallpaper WHERE _id < :sinceDate AND localPath IS NOT NULL AND isDeleted = 0 ORDER BY _id DESC LIMIT :limit")
     fun getImagesAfterDate(sinceDate: Long, limit: Int): List<DbEntityImage>
     ////
     @Query("SELECT * FROM wallpaper WHERE localPath = '' OR localPath IS NULL")

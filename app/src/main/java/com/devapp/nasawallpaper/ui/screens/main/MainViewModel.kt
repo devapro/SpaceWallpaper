@@ -14,6 +14,7 @@ import com.devapp.nasawallpaper.logic.usecases.GetImageUseCase
 import com.devapp.nasawallpaper.logic.usecases.SetRateUseCase
 import com.devapp.nasawallpaper.logic.BaseViewModel
 import com.devapp.nasawallpaper.storage.database.DataRepository
+import com.devapp.nasawallpaper.storage.database.livedata.LoadingStateLiveData
 import com.devapp.nasawallpaper.ui.screens.main.customview.imageList.ImageList
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -37,6 +38,8 @@ class MainViewModel(
     val pagedList : LiveData<PagedList<EntityImage>> = LivePagedListBuilder<Long, EntityImage>(factory, config)
         .setInitialLoadKey(null)
         .build()
+
+    val loadingStateLiveData = LoadingStateLiveData(dataRepository)
 
     fun getImageListener() : ImageList.ActionListener {
         return object : ImageList.ActionListener {

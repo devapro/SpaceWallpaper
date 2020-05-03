@@ -18,6 +18,12 @@ fun scheduleWorkers(app: App){
         .build()
     WorkManager.getInstance(app).enqueue(initialWorkRequest)
 
+    val downloadImageRequest = OneTimeWorkRequest
+        .Builder(DownloadImageWorker::class.java)
+        .setConstraints(constraintsForInitialLoader)
+        .build()
+    WorkManager.getInstance(app).enqueue(downloadImageRequest)
+
     val constraints = Constraints.Builder()
         .setRequiresBatteryNotLow(app.sPreferences.getBoolean(
             PREF_RESTRICT_BATTERY

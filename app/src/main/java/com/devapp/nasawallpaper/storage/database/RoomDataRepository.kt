@@ -34,6 +34,7 @@ class RoomDataRepository(private val appDataBase: AppDataBase) : DataRepository{
         return appDataBase.dataDao().getLastItemTime()
     }
 
+    // for live data
     override fun getImagesInitial(limit: Int): List<DbEntityImage> {
         return appDataBase.dataDao().getImagesInitial(limit)
     }
@@ -49,6 +50,7 @@ class RoomDataRepository(private val appDataBase: AppDataBase) : DataRepository{
     override fun getImagesAfterDate(sinceDate: Long, limit: Int): List<DbEntityImage> {
         return appDataBase.dataDao().getImagesAfterDate(sinceDate, limit)
     }
+    // end
 
     override fun getAllItemsForWallpaper(limit: Int, minRate: Int): List<DbEntityImage> {
         return appDataBase.dataDao().getAllItemsForWallpaper(limit, minRate)
