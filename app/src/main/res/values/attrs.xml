@@ -3,11 +3,14 @@
     <declare-styleable name="LoaderIndicatorView">
         <attr name="loader_circleRadius" format="dimension"/>
         <attr name="loader_circleSpacing" format="dimension"/>
-
         <attr name="loader_delay" format="integer"/>
-
         <attr name="loader_color_1" format="color"/>
         <attr name="loader_color_2" format="color"/>
         <attr name="loader_color_3" format="color"/>
+        <attr name="loader_mode" format="enum">
+            <enum name="scale" value="0"/>
+            <enum name="alpha" value="1"/>
+            <enum name="rotation" value="2"/>
+        </attr>
     </declare-styleable>
 </resources>

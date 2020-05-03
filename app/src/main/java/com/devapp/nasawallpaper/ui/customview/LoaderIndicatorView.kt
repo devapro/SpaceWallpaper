@@ -39,9 +39,9 @@ class LoaderIndicatorView @JvmOverloads constructor(
     private var circleRadius: Int
     private var circleMaxRadius: Int
     private var spaceBetweenCenters: Int
-    private var animationWidth: Int
-    private var animationHeight: Int
-    private var animationRadius: Int
+    private var animationWidth = 0
+    private var animationHeight = 0
+    private var animationRadius = 0
 
     private var animationX: Float = 0f
     private var animationY: Float = 0f
@@ -63,6 +63,8 @@ class LoaderIndicatorView @JvmOverloads constructor(
         colors[1] = typedArray.getColor(R.styleable.LoaderIndicatorView_loader_color_2, colors[1])
         colors[2] = typedArray.getColor(R.styleable.LoaderIndicatorView_loader_color_3, colors[2])
 
+        val mode = typedArray.getInt(R.styleable.LoaderIndicatorView_loader_mode, 0)
+
         typedArray.recycle()
 
         for (i in 0 until CIRCLES_COUNT){
@@ -70,23 +72,34 @@ class LoaderIndicatorView @JvmOverloads constructor(
         }
         paint.isAntiAlias = true
 
-        // createFullAnimatable()
-        // createAlphaAnimatable()
-        val animatable = createSimpleAnimatable()
-
-        animationRadius = 0
-        animationWidth = spaceBetweenCenters * (CIRCLES_COUNT - 1) + circleMaxRadius * 2 + 2
-        animationHeight = circleMaxRadius * 2 + 2
-
-        // for rotate
-//        animationRadius = (spaceBetweenCenters / cos(30 * Math.PI / 180)).toInt()
-//        animationWidth = (animationRadius + circleMaxRadius) * 2 + 2;
-//        animationHeight = animationWidth
+        val animatable = setMode(mode)
 
         animator.setTimeListener { anim, totalTime, deltaTime -> run {
             animatable.animate(totalTime.toInt())
             postInvalidate()
         } }
+    }
+
+    fun setMode(mode: Int): Animatable{
+        when(mode){
+            2 -> {
+                animationRadius = (spaceBetweenCenters / cos(30 * Math.PI / 180)).toInt()
+                animationWidth = (animationRadius + circleMaxRadius) * 2 + 2;
+                animationHeight = animationWidth
+            }
+            else -> {
+                animationRadius = 0
+                animationWidth = spaceBetweenCenters * (CIRCLES_COUNT - 1) + circleMaxRadius * 2 + 2
+                animationHeight = circleMaxRadius * 2 + 2
+            }
+
+        }
+        return when(mode){
+            0 -> createSimpleAnimatable()
+            1 -> createAlphaAnimatable()
+            2 -> createFullAnimatable()
+            else -> createSimpleAnimatable()
+        }
     }
 
     override fun onAttachedToWindow() {
