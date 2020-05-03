@@ -9,6 +9,20 @@
     <include
         layout="@layout/view_toolbar" />
 
+    <com.devapp.nasawallpaper.ui.customview.LoaderIndicatorView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:loader_circleRadius="24dp"
+        app:loader_circleSpacing="10dp"
+        app:loader_color_1="@color/colorPrimary"
+        app:loader_color_2="@color/colorAccent"
+        app:loader_color_3="@color/colorPrimaryDark"
+        android:id="@+id/loader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        />
+
     <com.devapp.nasawallpaper.ui.screens.main.customview.imageList.ImageList
         android:id="@+id/imagesList"
         android:layout_width="match_parent"
@@ -16,7 +30,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/loader" />
 
     <TextView
         android:id="@+id/emptyListInfo"

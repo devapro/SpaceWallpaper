@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LoaderIndicatorView">
+        <attr name="loader_circleRadius" format="dimension"/>
+        <attr name="loader_circleSpacing" format="dimension"/>
+
+        <attr name="loader_delay" format="integer"/>
+
+        <attr name="loader_color_1" format="color"/>
+        <attr name="loader_color_2" format="color"/>
+        <attr name="loader_color_3" format="color"/>
+    </declare-styleable>
+</resources>
