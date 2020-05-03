@@ -30,10 +30,6 @@ class LoaderIndicatorView @JvmOverloads constructor(
     private val colors = arrayOf(
         ContextCompat.getColor(getContext(), R.color.colorAccent),
         ContextCompat.getColor(getContext(), R.color.colorAccent),
-        ContextCompat.getColor(getContext(), R.color.colorAccent),
-
-        ContextCompat.getColor(getContext(), R.color.colorAccent),
-        ContextCompat.getColor(getContext(), R.color.colorAccent),
         ContextCompat.getColor(getContext(), R.color.colorAccent)
     )
 
@@ -67,10 +63,6 @@ class LoaderIndicatorView @JvmOverloads constructor(
         colors[1] = typedArray.getColor(R.styleable.LoaderIndicatorView_loader_color_2, colors[1])
         colors[2] = typedArray.getColor(R.styleable.LoaderIndicatorView_loader_color_3, colors[2])
 
-        colors[3] = typedArray.getColor(R.styleable.LoaderIndicatorView_loader_color_1, colors[0])
-        colors[4] = typedArray.getColor(R.styleable.LoaderIndicatorView_loader_color_2, colors[1])
-        colors[5] = typedArray.getColor(R.styleable.LoaderIndicatorView_loader_color_3, colors[2])
-
         typedArray.recycle()
 
         for (i in 0 until CIRCLES_COUNT){
@@ -78,15 +70,18 @@ class LoaderIndicatorView @JvmOverloads constructor(
         }
         paint.isAntiAlias = true
 
-        val animatable = createFullAnimatable() // createAlphaAnimatable() //createSimpleAnimatable()
+        // createFullAnimatable()
+        // createAlphaAnimatable()
+        val animatable = createSimpleAnimatable()
 
-//        animationRadius = 0
-//        animationWidth = spaceBetweenCenters * (CIRCLES_COUNT - 1) + circleMaxRadius * 2 + 2
-//        animationHeight = circleMaxRadius * 2 + 2
+        animationRadius = 0
+        animationWidth = spaceBetweenCenters * (CIRCLES_COUNT - 1) + circleMaxRadius * 2 + 2
+        animationHeight = circleMaxRadius * 2 + 2
 
-        animationRadius = (spaceBetweenCenters / cos(30 * Math.PI / 180)).toInt()
-        animationWidth = (animationRadius + circleMaxRadius) * 2 + 2;
-        animationHeight = animationWidth
+        // for rotate
+//        animationRadius = (spaceBetweenCenters / cos(30 * Math.PI / 180)).toInt()
+//        animationWidth = (animationRadius + circleMaxRadius) * 2 + 2;
+//        animationHeight = animationWidth
 
         animator.setTimeListener { anim, totalTime, deltaTime -> run {
             animatable.animate(totalTime.toInt())
@@ -133,7 +128,8 @@ class LoaderIndicatorView @JvmOverloads constructor(
             val circle = circles[i]
             val radius = circleRadius * circle!!.scale
             paint.color = circle.color
-            canvas.drawCircle(circle.position.x + 1f, circle.position.y + 1f, radius, paint)
+            val space = if(animationRadius == 0) 0f else animationWidth / 2f
+            canvas.drawCircle(circle.position.x + space, circle.position.y + animationRadius.toFloat(), radius, paint)
         }
         canvas.restore()
     }
@@ -212,16 +208,6 @@ class LoaderIndicatorView @JvmOverloads constructor(
         }
         val animators = AnimatorSet(animatorsArray)
 
-//        val animator1 = Animator(circles[0]!!)
-//            .add(upScale, 0, 333)
-//            .add(downScale, 333, 666)
-//        val animator2 = Animator(circles[1]!!)
-//            .add(upScale, 132, 465)
-//            .add(downScale, 465, 798)
-//        val animator3 = Animator(circles[2]!!)
-//            .add(upScale, 333, 666)
-//            .add(downScale, 666, 999)
-//        val animators = AnimatorSet(arrayOf(animator1, animator2, animator3))
         return RepeatingAnimator(animators, 0, 1000, 0)
     }
 
@@ -249,22 +235,14 @@ class LoaderIndicatorView @JvmOverloads constructor(
         }
         val animators = AnimatorSet(animatorsArray)
 
-
-//        val animator1 = Animator(circles[0]!!)
-//            .add(decreaseAlpha, 0, 333)
-//            .add(increaseAlpha, 333, 666)
-//        val animator2 = Animator(circles[1]!!)
-//            .add(decreaseAlpha, 132, 465)
-//            .add(increaseAlpha, 465, 798)
-//        val animator3 = Animator(circles[2]!!)
-//            .add(decreaseAlpha, 333, 666)
-//            .add(increaseAlpha, 666, 999)
-//        val animators = AnimatorSet(arrayOf(animator1, animator2, animator3))
         return RepeatingAnimator(animators, 0, 1000, 0)
     }
 
+    /**
+     * Animation with rotation
+     */
     private fun createFullAnimatable(): Animatable{
-        val timings = intArrayOf(0, 250, 400, 1400, 1401, 1700, 1850, 2350, 2500)
+        val timings = intArrayOf(0, 500, 1000, 1500, 2000)
         val centerX = animationWidth / 2
         val centerY = animationHeight / 2
         circles[1]!!.position.x = centerX
@@ -280,28 +258,24 @@ class LoaderIndicatorView @JvmOverloads constructor(
         circles[2]!!.position.x = rightCircleX
         circles[2]!!.position.y = rightCircleY
 
-        val firstMoveTopY = circleMaxRadius;
-        val firstMoveBottomY = centerX + (animationRadius * Math.sin(30 * Math.PI / 180));
-
         val lastSwirlRadius = (rightCircleX - centerX) / 2
-        val lastSwirlCenterX = centerX + lastSwirlRadius
-        val lastSwirlCenterY = centerY
 
         val animator1 = Animator(circles[0]!!)
-            .add(Move(leftCircleX, leftCircleY, leftCircleX, firstMoveBottomY.toInt()), timings[0], timings[1])
-        .add(Swirl(centerX, centerY, animationRadius, 0, 150, 360), timings[2], timings[3])
-        .add(Move(centerX, centerY, leftCircleX, leftCircleY), timings[4], timings[5]);
+            .add(Move(centerX, centerY, leftCircleX, leftCircleY), timings[0], timings[1]) // move to left
+            .add(Swirl(leftCircleX + lastSwirlRadius, leftCircleY, lastSwirlRadius, lastSwirlRadius, -180, 180), timings[1], timings[2]) // rotate to center
+            .add(Swirl(centerX + lastSwirlRadius, centerY, lastSwirlRadius, lastSwirlRadius, 180, -180), timings[2], timings[3]) // rotate to right
+            .add(Move(rightCircleX, rightCircleY, centerX, centerY), timings[3], timings[4]) // move to center
+
         val animator2 = Animator(circles[1]!!)
-            .add(Move(centerX, centerY, centerX, firstMoveTopY), timings[0], timings[1])
-        .add(Swirl(centerX, centerY, animationRadius, 0, 270, 360), timings[2], timings[3])
-        .add(Move(centerX, centerY, rightCircleX, rightCircleY), timings[4], timings[5])
-        .add(Swirl(lastSwirlCenterX, lastSwirlCenterY, lastSwirlRadius, lastSwirlRadius, 0, -180), timings[6], timings[7])
+            .add(Swirl(centerX - lastSwirlRadius, centerY, -lastSwirlRadius, -lastSwirlRadius, -180, 180), timings[1], timings[2]) // rotate to left
+            .add(Move(leftCircleX, leftCircleY, centerX, centerY), timings[3], timings[4]) // move to center
+
         val animator3 = Animator(circles[2]!!)
-            .add(Move(rightCircleX, rightCircleY, rightCircleX, firstMoveBottomY.toInt()), timings[0], timings[1])
-        .add(Swirl(centerX, centerY, animationRadius, 0, 30, 360), timings[2], timings[3])
-        .add(Swirl(lastSwirlCenterX, lastSwirlCenterY, lastSwirlRadius, lastSwirlRadius, 180, -180), timings[6], timings[7])
+            .add(Move(centerX, centerY, rightCircleX, leftCircleY), timings[0], timings[1]) // move to left
+            .add(Swirl(centerX + lastSwirlRadius, centerY, -lastSwirlRadius, -lastSwirlRadius, 180, -180), timings[2], timings[3]) // rotate to center
+
         val animators = AnimatorSet(arrayOf(animator1, animator2, animator3))
-        return RepeatingAnimator(animators, 0, timings[8], 0);
+        return RepeatingAnimator(animators, 0, timings[4], 0);
     }
 
     class AnimatorSet(private val animatable: Array<Animatable?>): Animatable{

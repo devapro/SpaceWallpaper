@@ -4,4 +4,9 @@
     <color name="colorPrimaryDark">#02042d</color>
     <color name="colorAccent">#297390</color>
     <color name="colorWhite">#FFFFFF</color>
+
+
+    <color name="colorPointOne">#006c88</color>
+    <color name="colorPointTwo">#3A7C8E</color>
+    <color name="colorPointTree">#006c88</color>
 </resources>
