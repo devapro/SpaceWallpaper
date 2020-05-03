@@ -3,6 +3,10 @@ package com.devapp.nasawallpaper.storage.database.livedata
 import androidx.lifecycle.LiveData
 import androidx.room.InvalidationTracker
 import com.devapp.nasawallpaper.storage.database.DataRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoadingStateLiveData(private val dataRepository: DataRepository): LiveData<Boolean>() {
 
@@ -21,7 +25,11 @@ class LoadingStateLiveData(private val dataRepository: DataRepository): LiveData
     }
 
     private fun invalidate(){
-        val unLoadedItems = dataRepository.getItemsForDownloading()
-        value = unLoadedItems.isNotEmpty()
+        GlobalScope.launch {
+            withContext(Dispatchers.IO){
+                val unLoadedItems = dataRepository.getItemsForDownloading()
+                postValue(unLoadedItems.isNotEmpty())
+            }
+        }
     }
 }
