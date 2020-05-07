@@ -11,16 +11,23 @@ import android.view.SurfaceHolder
 import com.devapp.nasawallpaper.logic.WallPapersRotator
 import com.devapp.nasawallpaper.storage.preferences.PREF_ANIMATION
 import com.devapp.nasawallpaper.utils.UtilSensors
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.devapp.nasawallpaper.utils.calculateInSampleSize
+import com.devapp.nasawallpaper.utils.getResizedBitmap
+import kotlinx.coroutines.*
+import java.lang.Runnable
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.coroutines.CoroutineContext
 
 class MyWallpaperService: WallpaperService() {
     override fun onCreateEngine(): Engine {
         return MyWallpaperEngine()
     }
 
-    inner class MyWallpaperEngine : Engine() {
+    inner class MyWallpaperEngine : Engine(), CoroutineScope {
+
+        private var coroutineJob = SupervisorJob()
+        override val coroutineContext: CoroutineContext
+            get() = Dispatchers.IO + coroutineJob
 
         private val handler = Handler(Looper.getMainLooper())
         private val drawRunner = Runnable { draw(0.00, 0.00) }
@@ -57,6 +64,7 @@ class MyWallpaperService: WallpaperService() {
                     }
                 })
             } else {
+                coroutineJob.cancelChildren()
                 handler.removeCallbacks(drawRunner)
                 nextImage()
                 UtilSensors.stop()
@@ -103,7 +111,7 @@ class MyWallpaperService: WallpaperService() {
         }
 
         private fun nextImage(){
-            GlobalScope.launch {
+            CoroutineScope(coroutineContext).launch {
                 val success = wallPapersRotator.getNextImage()
                 if(success){
                     handler.post(drawRunner)
@@ -201,26 +209,6 @@ class MyWallpaperService: WallpaperService() {
             }
         }
 
-        private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
-            // Raw height and width of image
-            val (height: Int, width: Int) = options.run { outHeight to outWidth }
-            var inSampleSize = 1
-
-            if (height > reqHeight || width > reqWidth) {
-
-                val halfHeight: Int = height / 2
-                val halfWidth: Int = width / 2
-
-                // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-                // height and width larger than the requested height and width.
-                while (halfHeight / inSampleSize >= reqHeight && halfWidth / inSampleSize >= reqWidth) {
-                    inSampleSize *= 2
-                }
-            }
-
-            return inSampleSize
-        }
-
         private fun drawBitmap(canvas: Canvas, bitmap: Bitmap, percentX : Double, percentY: Double){
             val mBitmapPaint = Paint(Paint.DITHER_FLAG)
             var w: Int = bitmap.getWidth()
@@ -269,26 +257,9 @@ class MyWallpaperService: WallpaperService() {
             canvas.drawBitmap(getResizedBitmap(bitmap, w, h, true), left, top, mBitmapPaint)
         }
 
-        private fun getResizedBitmap(
-            bm: Bitmap,
-            newWidth: Int,
-            newHeight: Int,
-            isNecessaryToKeepOrig: Boolean
-        ): Bitmap {
-            val width = bm.width
-            val height = bm.height
-            val scaleWidth = newWidth.toFloat() / width
-            val scaleHeight = newHeight.toFloat() / height
-            // CREATE A MATRIX FOR THE MANIPULATION
-            val matrix = Matrix()
-            // RESIZE THE BIT MAP
-            matrix.postScale(scaleWidth, scaleHeight)
-            // "RECREATE" THE NEW BITMAP
-            val resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false)
-            if (!isNecessaryToKeepOrig) {
-                bm.recycle()
-            }
-            return resizedBitmap
+        override fun onDestroy() {
+            super.onDestroy()
+            coroutineJob.cancel()
         }
 
     }

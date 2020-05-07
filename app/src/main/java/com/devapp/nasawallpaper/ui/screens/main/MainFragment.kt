@@ -1,6 +1,5 @@
 package com.devapp.nasawallpaper.ui.screens.main
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.*
@@ -14,16 +13,11 @@ import com.devapp.nasawallpaper.logic.usecases.GetImageUseCase
 import com.devapp.nasawallpaper.logic.usecases.SetRateUseCase
 import com.devapp.nasawallpaper.ui.NavigationFragment
 import com.devapp.nasawallpaper.utils.imageLoader.GlideDrawableLoader
-import com.devapp.nasawallpaper.utils.observe
-import com.devapp.nasawallpaper.utils.observeNonNull
+import com.devapp.nasawallpaper.utils.extensions.observe
+import com.devapp.nasawallpaper.utils.extensions.observeNonNull
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : NavigationFragment() {
-
-    companion object {
-        fun newInstance() =
-            MainFragment()
-    }
 
     private val viewModel by viewModels<MainViewModel>(){
         val nav = findNavController()

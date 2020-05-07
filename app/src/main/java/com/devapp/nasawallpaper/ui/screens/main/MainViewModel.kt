@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -53,13 +54,13 @@ class MainViewModel(
             }
 
             override fun onClickUp(item: EntityImage) {
-                GlobalScope.launch {
+                viewModelScope.launch {
                     setRateUseCase.setId(item.id).setRate(1).run()
                 }
             }
 
             override fun onClickDown(item: EntityImage) {
-                GlobalScope.launch {
+                viewModelScope.launch {
                     setRateUseCase.setId(item.id).setRate(-1).run()
                 }
             }

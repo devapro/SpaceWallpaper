@@ -3,7 +3,6 @@ package com.devapp.nasawallpaper.ui.screens.settings
 import android.app.WallpaperManager
 import android.content.ComponentName
 import android.content.Intent
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,7 @@ import com.devapp.nasawallpaper.ui.MainActivity
 import com.devapp.nasawallpaper.ui.NavigationFragment
 import com.devapp.nasawallpaper.utils.Permission
 import com.devapp.nasawallpaper.utils.UtilPermission
-import com.devapp.nasawallpaper.utils.observeNonNull
+import com.devapp.nasawallpaper.utils.extensions.observeNonNull
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 class SettingsFragment : NavigationFragment() {

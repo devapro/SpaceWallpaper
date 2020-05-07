@@ -1,4 +1,4 @@
-package com.devapp.nasawallpaper.utils
+package com.devapp.nasawallpaper.utils.extensions
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData

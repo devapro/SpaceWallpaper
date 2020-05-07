@@ -25,8 +25,7 @@ class ImageList @JvmOverloads constructor(
         layoutManager = LinearLayoutManager(context, VERTICAL, false)
         itemAnimator = DefaultItemAnimator()
         setHasFixedSize(true)
-        adapter =
-            ImagesListAdapter()
+        adapter = ImagesListAdapter()
     }
 
     fun submitList(list: PagedList<EntityImage>){

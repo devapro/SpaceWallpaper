@@ -3,12 +3,14 @@ package com.devapp.nasawallpaper.storage.database.livedata
 import androidx.lifecycle.LiveData
 import androidx.room.InvalidationTracker
 import com.devapp.nasawallpaper.storage.database.DataRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
-class LoadingStateLiveData(private val dataRepository: DataRepository): LiveData<Boolean>() {
+class LoadingStateLiveData(private val dataRepository: DataRepository): LiveData<Boolean>(), CoroutineScope {
+
+    private var coroutineJob: Job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO + coroutineJob
 
     private val tables = arrayOf("wallpaper")
 
@@ -18,14 +20,19 @@ class LoadingStateLiveData(private val dataRepository: DataRepository): LiveData
         }
     }
 
-    override fun onInactive() {
-        super.onInactive()
+    override fun onActive() {
+        super.onActive()
         dataRepository.addWeakObserver(this.observer)
         invalidate()
     }
 
+    override fun onInactive() {
+        super.onInactive()
+        coroutineJob.cancelChildren()
+    }
+
     private fun invalidate(){
-        GlobalScope.launch {
+        CoroutineScope(coroutineContext).launch {
             withContext(Dispatchers.IO){
                 val unLoadedItems = dataRepository.getItemsForDownloading()
                 postValue(unLoadedItems.isNotEmpty())

@@ -1,6 +1,5 @@
 package com.devapp.nasawallpaper.ui.screens.details
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,7 @@ import com.devapp.nasawallpaper.R
 import com.devapp.nasawallpaper.logic.usecases.GetImageUseCase
 import com.devapp.nasawallpaper.ui.NavigationFragment
 import com.devapp.nasawallpaper.utils.imageLoader.GlideDrawableLoader
-import com.devapp.nasawallpaper.utils.observe
+import com.devapp.nasawallpaper.utils.extensions.observe
 import kotlinx.android.synthetic.main.fragment_view_details.*
 
 class ViewDetailsFragment : NavigationFragment() {

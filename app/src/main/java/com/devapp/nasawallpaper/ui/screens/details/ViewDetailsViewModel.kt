@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.devapp.nasawallpaper.logic.entity.EntityImage
 import com.devapp.nasawallpaper.logic.usecases.GetImageUseCase
 import com.devapp.nasawallpaper.logic.BaseViewModel
@@ -31,7 +32,7 @@ class ViewDetailsViewModel(
     val imageDrawable = MutableLiveData<Drawable>()
 
     private fun getImageInfo(imageId: Int?){
-        GlobalScope.launch {
+        viewModelScope.launch {
             withContext(Dispatchers.IO){
                 imageId?.let {
                     val imageDbEntity = dataRepository.getImageInfoById(imageId)
