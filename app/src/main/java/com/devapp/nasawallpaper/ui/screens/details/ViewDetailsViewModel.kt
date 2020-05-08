@@ -1,7 +1,11 @@
 package com.devapp.nasawallpaper.ui.screens.details
 
+import android.app.Activity
 import android.app.Application
+import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +16,7 @@ import com.devapp.nasawallpaper.logic.BaseViewModel
 import com.devapp.nasawallpaper.storage.database.DataRepository
 import com.devapp.nasawallpaper.storage.database.ImageMapper
 import kotlinx.coroutines.*
+import java.io.File
 
 class ViewDetailsViewModel(
     app: Application,
@@ -48,6 +53,21 @@ class ViewDetailsViewModel(
 
     private suspend fun getImageDrawable(item: EntityImage): Drawable?{
         return getImageUseCase.setEntityImage(item).run()
+    }
+
+    fun share(activity: Activity){
+        val imageToShare = imageInfo.value
+        imageToShare?.let {
+            val uri = FileProvider.getUriForFile(activity, activity.applicationContext.packageName + ".provider", File(it.localPath));
+            val shareIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_STREAM, uri)
+                type = "image/jpeg"
+            }
+            if(shareIntent.resolveActivity(activity.packageManager) !== null){
+                activity.startActivity(Intent.createChooser(shareIntent, it.description))
+            }
+        }
     }
 
     override fun onCleared() {

@@ -31,14 +31,15 @@ class ViewDetailsFragment : NavigationFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val args =
-            ViewDetailsFragmentArgs.fromBundle(
-                requireArguments()
-            )
+        val args = ViewDetailsFragmentArgs.fromBundle(requireArguments())
         viewModel.imageId = args.imageId
 
         displayHome()
         setTitle(getString(R.string.app_name))
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         collapsingToolbar.setExpandedTitleTextAppearance(R.style.ExpandedTitleTextAppearance)
 
@@ -50,6 +51,8 @@ class ViewDetailsFragment : NavigationFragment() {
         }
 
         viewModel.imageDrawable.observe(viewLifecycleOwner){ image.setImageDrawable(it) }
+
+        shareButton.setOnClickListener { viewModel.share(requireActivity()) }
     }
 
 }
