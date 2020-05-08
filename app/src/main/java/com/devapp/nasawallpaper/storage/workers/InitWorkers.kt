@@ -25,10 +25,8 @@ fun scheduleWorkers(app: App){
     WorkManager.getInstance(app).enqueue(downloadImageRequest)
 
     val constraints = Constraints.Builder()
-        .setRequiresBatteryNotLow(app.sPreferences.getBoolean(
-            PREF_RESTRICT_BATTERY
-        ))
-        .setRequiresDeviceIdle(app.sPreferences.getBoolean(PREF_RESTRICT_IDLE))
+        .setRequiresBatteryNotLow(app.sPreferences.getRestrictBattery())
+        .setRequiresDeviceIdle(app.sPreferences.getRestrictIdle())
         .setRequiresStorageNotLow(true)
         .setRequiredNetworkType(NetworkType.CONNECTED)
         .build()

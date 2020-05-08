@@ -41,7 +41,7 @@ class MyWallpaperService: WallpaperService() {
         override fun onVisibilityChanged(visible: Boolean) {
             this.visible = visible
             if (visible) {
-                animation = (application as App).sPreferences.getBoolean(PREF_ANIMATION, true)
+                animation = (application as App).sPreferences.getAnimation(true)
                 if(wallPapersRotator.currentBitmap != null || isPreview){
                     handler.post(drawRunner)
                 }

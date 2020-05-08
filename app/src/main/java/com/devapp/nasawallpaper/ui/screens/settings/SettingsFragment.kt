@@ -54,12 +54,12 @@ class SettingsFragment : NavigationFragment() {
         openInfo?.setOnClickListener { openInfo() }
 
         viewModel.settingsAnimation.observeNonNull(viewLifecycleOwner){ switchAnimation.isChecked = it }
-        viewModel.settingsBatteryRestrict.observeNonNull(viewLifecycleOwner){ switchBatteryRestrict.isChecked = it }
-        viewModel.settingsIdleRestrict.observeNonNull(viewLifecycleOwner){ switchIdleRestrict.isChecked = it }
+        viewModel.settingsRestrictBattery.observeNonNull(viewLifecycleOwner){ switchBatteryRestrict.isChecked = it }
+        viewModel.settingsRestrictIdle.observeNonNull(viewLifecycleOwner){ switchIdleRestrict.isChecked = it }
 
         switchAnimation?.setOnCheckedChangeListener { _, isChecked -> viewModel.setAnimation(isChecked) }
-        switchBatteryRestrict?.setOnCheckedChangeListener { _, isChecked -> viewModel.setBatteryRestrict(isChecked) }
-        switchIdleRestrict?.setOnCheckedChangeListener { _, isChecked -> viewModel.setIdleRestrict(isChecked) }
+        switchBatteryRestrict?.setOnCheckedChangeListener { _, isChecked -> viewModel.setRestrictBattery(isChecked) }
+        switchIdleRestrict?.setOnCheckedChangeListener { _, isChecked -> viewModel.setRestrictIdle(isChecked) }
 
     }
 
