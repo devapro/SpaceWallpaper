@@ -15,7 +15,7 @@ import kotlin.coroutines.CoroutineContext
 
 class ImageViewHolder(itemView: View)  : RecyclerView.ViewHolder(itemView), CoroutineScope {
     companion object{
-        val LAYOUT_ID = R.layout.item_image
+        const val LAYOUT_ID = R.layout.item_image
     }
 
     private var coroutineJob: Job = Job()

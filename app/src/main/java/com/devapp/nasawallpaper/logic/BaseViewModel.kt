@@ -9,14 +9,6 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 open class BaseViewModel (application: Application) : AndroidViewModel(application){
-    var uiThreadExecutor: Executor = ContextCompat.getMainExecutor(application)
-    var workThreadExecutor: ExecutorService = Executors.newFixedThreadPool(2)
-
-    override fun onCleared() {
-        super.onCleared()
-        workThreadExecutor.shutdown()
-    }
-
     fun getStringRes(@StringRes resId: Int): String{
         return getApplication<Application>().resources.getString(resId)
     }

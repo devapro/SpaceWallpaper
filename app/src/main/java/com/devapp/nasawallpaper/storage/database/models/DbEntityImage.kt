@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import java.io.Serializable
 
 @Entity(tableName = "wallpaper")
-class DbEntityImage (
+data class DbEntityImage (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
     val id: Int,

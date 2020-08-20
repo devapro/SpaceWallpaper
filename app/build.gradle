@@ -44,7 +44,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.3.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'org.conscrypt:conscrypt-android:2.2.1'
-    implementation 'com.squareup.okhttp3:okhttp:4.4.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.5.0'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
@@ -55,15 +55,20 @@ dependencies {
     kapt "androidx.room:room-compiler:$roomVersion"
     implementation "android.arch.paging:runtime:1.0.1"
 
-    implementation("com.squareup.okhttp3:okhttp:4.4.0")
-
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
     implementation ("com.github.bumptech.glide:glide:4.11.0@aar") {
         transitive = true
     }
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.9.0'
 
-    testImplementation 'junit:junit:4.12'
+    //tests
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
 }
 
 
